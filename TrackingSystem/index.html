@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking System Demo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <link rel="stylesheet" type="text/css" href="demo.css" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="../template.css" />
+    <script type="text/javascript" src='../test-credentials.js'></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    
+    <STYLe>
+        #map {
+            height: 20vw;
+        }
+    </STYLe>
+</head>
+
+<body>
+    <div class="container">
+        
+        <div class="row justify-content-md-center">
+            <div class="col col-lg">
+                <h1>
+                    Return latitude/longtitude Demo
+                </h1>
+            </div>
+        </div>
+        
+        <div class="row justify-content-md-center">
+            <video id="preview"></video>
+            
+        </div>
+        <div class="row justify-content-md-center">
+            <button id="find-me">Pretend after scan QR_CODE</button>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col col-lg">
+
+                
+
+                
+
+                <div id="map"></div>
+                <script>
+
+                    // This example adds a marker to indicate the position of Bondi Beach in Sydney,
+                    // Australia.
+                    var lad=0, long=0;
+                    function initMap(lad, long) {
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 10,
+                            center: { lat: lad, lng: long }
+                        });
+
+                        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+                        var beachMarker = new google.maps.Marker({
+                            position: { lat: lad, lng: long },
+                            map: map,
+                            icon: image
+                        });
+                    }
+                </script>
+
+
+                <p id="status"></p>
+                <a id="map-link" target="_blank"></a>
+            </div>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">ชื่อผู้ส่งข้อความ</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="กรอกชื่อ">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">ข้อความฝากถึงผู้บริจาค</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                    placeholder="กรอกข้อความที่ต้องการฝากถึงผู้ให้บริจาค"></textarea>
+            </div>
+        </form>
+
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">ฝากรูปภาพไปถึงผู้ให้</label>
+                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+        </form>
+        <button type="submit">กดเพื่อส่ง</button>
+    </div>
+
+    
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+        alert(content);
+      });
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[0]);
+        } else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    </script>
+
+
+    <script>
+        function geoFindMe() {
+
+            const status = document.querySelector('#status');
+            const mapLink = document.querySelector('#map-link');
+
+            mapLink.href = '';
+            mapLink.textContent = '';
+
+            function success(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                status.textContent = '';
+                mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+                mapLink.textContent = `พิกัดของผู้บริจาคปัจจุบัน : Latitude: ${latitude} °, Longitude: ${longitude} °`;
+                initMap(latitude, longitude);
+            }
+
+            function error() {
+                status.textContent = 'Unable to retrieve your location';
+            }
+
+            if (!navigator.geolocation) {
+                status.textContent = 'Geolocation is not supported by your browser';
+            } else {
+                status.textContent = 'Locating…';
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+
+        }
+
+
+        document.querySelector('#find-me').addEventListener('click', geoFindMe);
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8DVuwuSf7qukGFoR0O3XTQrVeS0lSrWo&callback=initMap">
+    </script>
+
+    <script type="text/javascript" src='heremap.js'></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
