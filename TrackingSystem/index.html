@@ -9,7 +9,7 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <link rel="stylesheet" type="text/css" href="demo.css" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="styleshe et" type="text/css" href="styles.css" />
     <link rel="stylesheet" type="text/css" href="../template.css" />
     <script type="text/javascript" src='../test-credentials.js'></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
@@ -19,7 +19,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-    
+
     <STYLe>
         #map {
             height: 20vw;
@@ -29,7 +29,7 @@
 
 <body>
     <div class="container">
-        
+
         <div class="row justify-content-md-center">
             <div class="col col-lg">
                 <h1>
@@ -37,10 +37,10 @@
                 </h1>
             </div>
         </div>
-        
+
         <div class="row justify-content-md-center">
             <video id="preview"></video>
-            
+
         </div>
         <div class="row justify-content-md-center">
             <button id="find-me">Pretend after scan QR_CODE</button>
@@ -48,16 +48,16 @@
         <div class="row justify-content-md-center">
             <div class="col col-lg">
 
-                
 
-                
+
+
 
                 <div id="map"></div>
                 <script>
 
                     // This example adds a marker to indicate the position of Bondi Beach in Sydney,
                     // Australia.
-                    var lad=0, long=0;
+                    var lad = 0, long = 0;
                     function initMap(lad, long) {
                         var map = new google.maps.Map(document.getElementById('map'), {
                             zoom: 10,
@@ -100,21 +100,21 @@
         <button type="submit">กดเพื่อส่ง</button>
     </div>
 
-    
+
     <script type="text/javascript">
-      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-      scanner.addListener('scan', function (content) {
-        alert(content);
-      });
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          scanner.start(cameras[0]);
-        } else {
-          console.error('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        scanner.addListener('scan', function (content) {
+            alert(content);
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
     </script>
 
 
@@ -154,8 +154,9 @@
         document.querySelector('#find-me').addEventListener('click', geoFindMe);
     </script>
 
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8DVuwuSf7qukGFoR0O3XTQrVeS0lSrWo&callback=initMap">
-    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8DVuwuSf7qukGFoR0O3XTQrVeS0lSrWo&callback=initMap">
+        </script>
 
     <script type="text/javascript" src='heremap.js'></script>
 

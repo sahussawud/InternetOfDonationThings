@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<div class="card text-center">
+    <div class="card-header">
+      Complete
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Name : {{ name }}</h5>
+      <p class="card-text">Reciever : {{ Reciever}} Address : {{ address }}</p>
+      <img class="card-img-top" style="width: fit-content;" src="{% static "qrcode.png" %}" alt="My image">
+      <br>
+      <a href="#" class="btn btn-primary">print a QR</a>
+    </div>
+    <div class="card-footer text-muted">
+      
+      status : Pending
+    </div>
+  </div>
+  
+{% endblock content %}

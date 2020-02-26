@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h1>Your Donations Things</h1>
+        <p></p>
+        <br/><br/>
+        <!-- <form class="form-inline" method="GET" action="{% url 'index' %}">
+            <div class="form-group">
+                <label for="inputSearch">filter:</label>
+                <input type="text" class="form-control ml-3" id="inputSearch" 
+                    name="inputSearch" placeholder="Search" value="{{search_txt}}">
+            </div>
+            <button type="submit" class="btn btn-primary ml-3">Submit</button>
+        </form> -->
+        <br/><br/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">สิ่งที่บริจาค</th>
+                    <th scope="col">รหัส</th>
+                    <th scope="col">ชื่อโครงการ</th>
+                    <th scope="col">มอบให้</th>
+                    <th scope="col">สถานะ</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cl in classes %}
+                <tr>
+                    <td>{{ cl.weekday }} @ {{ cl.time }}</td>
+                    <td>{{ cl.course.name }} ({{ cl.course.code }})</td>
+                    <td>{{ cl.section }}</td>
+                    <td>{{ cl.room }}</td>
+                    <td>{{ cl.student_amount }}</td>
+                    <td>
+                        <a href="{% url 'class_detail' class_id=cl.id %}">
+                            <div class="btn btn-warning" id="{{cl.id}}">ผลตอบรับ</div>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    Footer of index page!!!
+{% endblock %}

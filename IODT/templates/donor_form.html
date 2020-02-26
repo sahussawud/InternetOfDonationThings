@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>PROJECT</title>
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-light bg-primary">
+        <a class="navbar-brand" href="#">
+            <img src="https://www.ratafoundation.org.nz/media/1382/rata_positive_rgb.png" width="240" height="55"
+                alt="">
+        </a>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <br><br>
+    <div class="container">
+        <div class="row">
+
+            <div class="col">
+
+                <form method="post" id="image-form">
+                    <input type="file" name="img[]" class="file" accept="image/*">
+                    <!-- <input type="text" class="form-control" disabled placeholder="Upload File" id="file">-->
+                    <img src="https://www.claremontmedicalpractice.co.uk/themes/custom/claremont/images/galleryicon.png"
+                        id="preview" class="browse" width="370px">
+                        <br><br>
+                    <button type="button" class="btn btn-primary browse" style="width: 370px;">choose image</button>
+                    <br><br>
+                </form>
+            </div>
+
+            <div class="col">
+
+                <h5 class="card-title font-weight-bold">ต้องการเสื้อ (ใหม่/เก่า)</h5>
+
+                <p class="card-text">By : <a href="#">มูลนิธิ KMITL foundation</a><br>
+                    จำนวน : 40 ตัว | ขั้นต่ำ : 2 ตัว<br>
+                    ส่งผ่าน : ช่องทางขนส่งทั่วไป</p>
+
+                <form>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">ชื่อสิ่งของที่บริจาค</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput">
+                        <label for="formGroupExampleInput">จำนวน</label>
+                        <select class="form-control" id="exampleSelect1">
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                        <label for="formGroupExampleInput">สภาพ</label>
+                        <select class="form-control" id="exampleSelect1">
+                            <option>ใหม่</option>
+                            <option>เก่า</option>
+                        </select>
+                        <br>
+                        <label for="exampleTextarea">ส่งถึง : <a href="#">KMITL foundation</a></label>
+                        <textarea class="form-control" id="exampleTextarea"
+                            rows="2">1 ถนน ฉลองกรุง แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520</textarea>
+                        <br>
+                        <label for="exampleTextarea">ผู้ส่ง : <a href="#">61070219</a>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1" checked> ระบุ
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio2" value="option2"> ไม่ระบุ
+                                </label>
+                            </div>
+
+                    </div>
+                    </label>
+                    <textarea class="form-control" id="exampleTextarea"
+                        rows="2">300/67 รุ่งอรุณ1  ฉลองกรุงซอย2 ถนนฉลองกรุงแขวงลำปลาทิว เขตลาดกระบัง กทม10520</textarea>
+                    <br>
+                    <label for="exampleTextarea">ข้อความจากผู้ส่ง</a></label>
+                    <textarea class="form-control" id="exampleTextarea" rows="2">enjoy your gift :)</textarea>
+                    <br>
+                    <a href="docc.html" class="btn btn-primary btn-lg btn-block">submit</a>
+
+                </form>
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+    </div>
+    </div>
+
+    <style>
+        .img-responsive {
+            height: 80px;
+        }
+
+        body {
+            font-family: 'Kanit';
+        }
+
+        .file {
+            visibility: hidden;
+            position: absolute;
+        }
+    </style>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+<script>
+
+    $(document).on("click", ".browse", function () {
+        var file = $(this).parents().find(".file");
+        file.trigger("click");
+    });
+    $('input[type="file"]').change(function (e) {
+        var fileName = e.target.files[0].name;
+        $("#file").val(fileName);
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            document.getElementById("preview").src = e.target.result;
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    });
+
+
+</script>
+
+</html>
