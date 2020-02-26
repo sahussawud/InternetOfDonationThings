@@ -20,3 +20,6 @@ def register(request):
 def complete(request):
     print(request.POST)
     return render(request, 'register/reg_complete.html')
+
+def donor_form(request):
+    return render(request, 'register/donor_form.html')
