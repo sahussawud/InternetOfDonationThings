@@ -1,25 +1,48 @@
 from django.shortcuts import redirect, render
 from django.template.context_processors import request
-from .forms import RegThingForm
+from .models import thing
+from .forms import thingForm
 from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
-def register(request):
-    context=dict()
-    if request.method == "POST":
-        context = {
-            'name' : request.POST.get('title'),
-            'reciever' : request.POST.get('reciever'),
-            'address' : request.POST.get('address'),
-            'is_accept' : request.POST.get('is_accept'),
-            'picture' : request.POST.get('picture')
-        }
-        return render(request, 'register/register.html',context)
-    return render(request, 'register/register.html')
-
 def complete(request):
     print(request.POST)
     return render(request, 'register/reg_complete.html')
+    
+def register(request):
+    if request.method == 'POST':
+        names = request.POST.get('name')
+        addresss = request.POST.get('address')
+        is_accepts = request.POST.get('is_accept')
+        pics = request.POST.get('picture')
+        recievers = request.POST.get('reciever')
+
+        things = thing(
+            name = names,
+            address = addresss,
+            picture = pics,
+            reciever = recievers
+        )
+        things.save()
+        redirect('complete')
+    return render(request, 'register/register.html', )
+
 
 def donor_form(request):
-    return render(request, 'register/donor_form.html')
+     # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = thingForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            
+            # ...
+            # redirect to a new URL:        
+            redirect('complete')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = thingForm()
+
+    return render(request, 'register/donor_form.html', context={'form': form})

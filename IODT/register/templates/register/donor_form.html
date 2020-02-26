@@ -69,7 +69,7 @@
                     <img src="https://www.claremontmedicalpractice.co.uk/themes/custom/claremont/images/galleryicon.png"
                         id="preview" class="browse" width="370px">
                         <br><br>
-                    <button type="button" class="btn btn-primary browse" style="width: 370px;">choose image</button>
+                    <button type="button" class="btn btn-primary browse" style="width: 370px;" name="picture">choose image</button>
                     <br><br>
                 </form>
             </div>
@@ -82,10 +82,11 @@
                     จำนวน : 40 ตัว | ขั้นต่ำ : 2 ตัว<br>
                     ส่งผ่าน : ช่องทางขนส่งทั่วไป</p>
 
-                <form>
+                <form method="POST">
+                    {{ }}
                     <div class="form-group">
                         <label for="formGroupExampleInput">ชื่อสิ่งของที่บริจาค</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput">
+                        <input type="text" class="form-control" id="formGroupExampleInput" name="name">
                         <label for="formGroupExampleInput">จำนวน</label>
                         <select class="form-control" id="exampleSelect1">
                             <option>2</option>
@@ -101,7 +102,7 @@
                         <br>
                         <label for="exampleTextarea">ส่งถึง : <a href="#">KMITL foundation</a></label>
                         <textarea class="form-control" id="exampleTextarea"
-                            rows="2">1 ถนน ฉลองกรุง แขวง ลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520</textarea>
+                            rows="2" name="address" placeholder="ที่อยู่ผู้รับ"></textarea>
                         <br>
                         <label for="exampleTextarea">ผู้ส่ง : <a href="#">61070219</a>
                             <div class="form-check form-check-inline">
@@ -125,7 +126,7 @@
                     <label for="exampleTextarea">ข้อความจากผู้ส่ง</a></label>
                     <textarea class="form-control" id="exampleTextarea" rows="2">enjoy your gift :)</textarea>
                     <br>
-                    <a href="docc.html" class="btn btn-primary btn-lg btn-block">submit</a>
+                    <button type="summit" class="btn btn-primary btn-lg btn-block">submit</button>
 
                 </form>
 
