@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+<div class="alert alert-success" role="alert">
+    This is a success alert—check it out!
+  </div>
+<div class="card text-center">
+    <div class="card-header success">
+        Activate Success
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Name : {{ name }}</h5>
+        <p class="card-text">Reciever : {{ Reciever}} Address : {{ address }}</p>
+        <br>
+        <div id="map" style="height: 20vw;"></div>
+
+    </div>
+    <button id="find-me">Allow Position to Donor</button>
+    <div class="card-footer text-muted">
+
+        status : Confirmed
+    </div>
+</div>
+
+<div id="map"></div>
+<script>
+
+    // This example adds a marker to indicate the position of Bondi Beach in Sydney,
+    // Australia.
+    var lad = 0, long = 0;
+    function initMap(lad, long) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: { lat: lad, lng: long }
+        });
+
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        var beachMarker = new google.maps.Marker({
+            position: { lat: lad, lng: long },
+            map: map,
+            icon: image
+        });
+    }
+</script>
+
+
+<p id="status"></p>
+<a id="map-link" target="_blank"></a>
+
+
+
+
+
+
+<script>
+    function geoFindMe() {
+
+        const status = document.querySelector('#status');
+        const mapLink = document.querySelector('#map-link');
+
+        mapLink.href = '';
+        mapLink.textContent = '';
+
+        function success(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            status.textContent = '';
+            mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+            mapLink.textContent = `พิกัดของผู้บริจาคปัจจุบัน : Latitude: ${latitude} °, Longitude: ${longitude} °`;
+            initMap(latitude, longitude);
+        }
+
+        function error() {
+            status.textContent = 'Unable to retrieve your location';
+        }
+
+        if (!navigator.geolocation) {
+            status.textContent = 'Geolocation is not supported by your browser';
+        } else {
+            status.textContent = 'Locating…';
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+    }
+
+
+    document.querySelector('#find-me').addEventListener('click', geoFindMe);
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8DVuwuSf7qukGFoR0O3XTQrVeS0lSrWo&callback=initMap">
+    </script>
+
+<script type="text/javascript" src='heremap.js'></script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+{% endblock content %}

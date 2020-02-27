@@ -29,10 +29,22 @@ def register(request):
             reciever = recievers
         )
         things.save()
-        return HttpResponseRedirect(reverse('complete', kwargs={'name': names, 'address': addresss, 'reciever': recievers}))
+        thing_pk = things.pk
+        return HttpResponseRedirect(reverse('complete', kwargs={'thing_id':thing_pk,'name': names, 'address': addresss, 'reciever': recievers}))
         # return redirect(to='complete', kwargs={'name': names, 'address': addresss, 'reciever': recievers})
     return render(request, 'register/register.html')
 
 
+def activate(request, id_thing):
+    print(id_thing)
+    a_thing = thing.objects.get(pk=id_thing)
+    contexts = {
+        'name': a_thing.name,
+        'address': a_thing.address,
+        'reciever': a_thing.reciever,
+        'thing_id': a_thing.pk
+    }
+    return render(request, 'register/activate.html',context=contexts)
+     
 def donor_form(request):
     return render(request, 'register/donor_form.html')
