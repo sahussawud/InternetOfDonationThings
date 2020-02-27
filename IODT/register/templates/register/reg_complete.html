@@ -2,21 +2,33 @@
 
 {% block content %}
 {% load static %}
+
 <div class="card text-center">
-    <div class="card-header">
-      Complete
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Name : {{ name }}</h5>
-      <p class="card-text">Reciever : {{ Reciever}} Address : {{ address }}</p>
-      <img class="card-img-top" style="width: fit-content;" src="{% static "qrcode.png" %}" alt="My image">
-      <br>
-      <a href="#" class="btn btn-primary">print a QR</a>
-    </div>
-    <div class="card-footer text-muted">
-      
-      status : Pending
-    </div>
+  <div class="card-header">
+    Complete
   </div>
+  <div class="card-body">
+    <h5 class="card-title">Name : {{ name }}</h5>
+    <p class="card-text">Reciever : {{ Reciever}} Address : {{ address }}</p>
+    <br>
+    <input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%" /><br />
+    <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
   
+    <script type="text/javascript" src="{% static 'js/qrcode.js' %}">
+      var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width: 100,
+        height: 100
+      });
+      qrcode(1,'M');
+
+    </script>
+    <a href="#" class="btn btn-primary">print a QR</a>
+  </div>
+  <div class="card-footer text-muted">
+
+    status : Pending
+  </div>
+</div>
+
 {% endblock content %}

@@ -7,7 +7,7 @@
 </style>
 <h1>Welcome to Register Things Page</h1>
 
-<form class="form-group" method='POST' action="{% url 'complete' %}">
+<form class="form-group" method='POST' action="{% url 'complete' %}" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="form-group">
     <label for="exampleFormControlInput1">ชื่อของบริจาค</label>
