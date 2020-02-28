@@ -1,0 +1,37 @@
+{% extends "base2.html" %}
+
+{% block content %}
+{% load static %}
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th scope="col">รหัสสิ่งของ</th>
+            <th scope="col">ชื่อสิ่งของ</th>
+            <th scope="col">ที่อยู่ผู้รับ</th>
+            <th scope="col">ชื่อผู้รับ</th>
+            <th scope="col">วันที่ลงทะเบียน</th>
+            <th scope="col">สถานะ</th>
+     
+        </tr>
+    </thead>
+    <tbody>
+        {% for cl in things %}
+        <tr>
+            <td>{{ cl.id }}</td>
+            <td>{{ cl.name }}</td>
+            <td>{{ cl.address }}</td>
+            <td>{{ cl.reciever }}</td>
+            <td>{{ cl.timestamp }}</td>
+            <td>{{ cl.is_accept }}</td>
+            <td>
+                <a href="{% url 'activate' id_thing=cl.id %">
+                    <div class="btn btn-success" id="{{cl.id}}">ยืนยัน</div>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

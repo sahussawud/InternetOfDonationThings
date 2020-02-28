@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% block content %}
 {% load static %}
@@ -12,10 +12,11 @@
     <p class="card-text">Reciever : {{ Reciever}} Address : {{ address }}</p>
     
     <br>
+    <a href="">
     <div class="card-image">
       <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ address}}&amp;size=100x100" alt="" title="" />
     </div>
-  
+    </a>
     
   
   </div>
