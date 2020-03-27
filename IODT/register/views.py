@@ -1,7 +1,6 @@
 from django.shortcuts import redirect, render
 from django.template.context_processors import request
-from .models import thing
-from .forms import thingForm
+
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 

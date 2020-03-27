@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'reports',
     'management',
     'register',
+    'donations'
    
 
 ]
@@ -133,3 +134,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+AUTH_USER_MODEL = 'register.User'
+
+LOGIN_URL = '/login/'
