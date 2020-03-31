@@ -64,6 +64,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="" tabindex="-1" >activate things</a>
                 </li>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Login
+                </button>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -73,6 +76,8 @@
     </nav>
     <br><br>
     <br>    
+    {% include 'login.html' %}
+
     <div class="container">
         {% block content %}
         {% endblock %}
