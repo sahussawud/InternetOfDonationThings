@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^ex1qa6we2izmv25vg1_&-yn2pkj6kb@br74pj2lo=*md^2*t$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True # False for heroku
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'management',
     'register',
     'donations',
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'attendance.urls'
@@ -92,7 +92,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.config(default='postgres://jxqxybhqgjuaut:5ab466ca8a1d1a294c9bf07cbaf5af78663b1b0d5b0256964b70ca84f3e91c7e@ec2-34-200-101-236.compute-1.amazonaws.com:5432/d8fccomi3p4kgb')
+# DATABASES['default'] = dj_database_url.config(default='postgres://jxqxybhqgjuaut:5ab466ca8a1d1a294c9bf07cbaf5af78663b1b0d5b0256964b70ca84f3e91c7e@ec2-34-200-101-236.compute-1.amazonaws.com:5432/d8fccomi3p4kgb')
 
 
 # Password validation
@@ -141,6 +141,6 @@ AUTH_USER_MODEL = 'register.User'
 
 LOGIN_URL = '/login/'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
