@@ -17,12 +17,10 @@ class Location(models.Model):
     _type = models.CharField(max_length=10,choices=TYPES)
     ladtitude = models.CharField(max_length=50)
     longtitude = models.CharField(max_length=50)
-
 class RequireType(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=255)
     amount = models.SmallIntegerField()
-
 class Project(models.Model):
     STATUS = (
         ('open','เปิดรับริจาค'),
@@ -41,6 +39,15 @@ class Project(models.Model):
     expire_date = models.DateTimeField()
     recipient = models.ForeignKey(Recipient,on_delete=models.SET_NULL, null=True)
 
+class Album(models.Model):
+    name = models.CharField(max_length=30)
+    desc = models.CharField(max_length=255)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+
+class Picture(models.Model):
+    name = models.CharField(max_length=30, blank=True)
+    url = models.ImageField(upload_to='album/pic/')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, default=0)
 
 class Donation(models.Model):
     STATUS = (
@@ -67,15 +74,16 @@ class Donation(models.Model):
         ('5','ใหม่'),
     )
     name = models.CharField(max_length=255)
-    status = models.CharField(max_length=20, choices=STATUS)
+    status = models.CharField(max_length=20, choices=STATUS, default=STATUS[0])
     _type = models.CharField(max_length=40, choices=TYPE)
     desc = models.TextField()
     condition = models.CharField(max_length=1, choices=CONDITION)
     quantity = models.IntegerField(default=1)
     date = models.DateField(auto_now_add=True)
-    donor = models.ForeignKey(Doner, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    donor = models.ForeignKey(Doner, on_delete=models.CASCADE, default=0)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=0)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+    album = models.OneToOneField(Album, on_delete=models.CASCADE, null=True)
 
 class Qrcode(models.Model):
     donation = models.OneToOneField(Donation, on_delete=models.CASCADE, null=True)
@@ -97,8 +105,8 @@ class Shipping(models.Model):
     company = models.CharField(choices=S_COMPANY,max_length=8)
     reciept = models.ImageField(upload_to='shipping/slip/')
     send_datetime = models.DateTimeField()
-    senddetail = models.OneToOneField(SendDetail, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    senddetail = models.OneToOneField(SendDetail, on_delete=models.CASCADE, default=0)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, default=0)
 
 class Feedback(models.Model):
     sender = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
@@ -106,16 +114,6 @@ class Feedback(models.Model):
     detail = models.TextField()
     sent_date = models.DateTimeField(auto_now_add=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=0)
 
-
-class Album(models.Model):
-    name = models.CharField(max_length=30)
-    desc = models.CharField(max_length=255)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-
-class Picture(models.Model):
-    name = models.CharField(max_length=30)
-    url = models.ImageField(upload_to='album/pic/')
-    album = models.ForeignKey(Album, on_delete=models.CASCADE)
 

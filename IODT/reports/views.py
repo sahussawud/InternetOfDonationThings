@@ -32,4 +32,4 @@ def search(request):
     return HttpResponse('Attendance Search Page.')
 
 def index(request):
-    return render(request, 'report/index.html')
+    return render(request, 'report/index.html',{})

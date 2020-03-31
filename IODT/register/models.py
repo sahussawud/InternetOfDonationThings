@@ -8,7 +8,7 @@ from django.db import models
 from django.db.models.fields import CharField
 
 # Create your models here.
-class User(AbstractUser):
+class user(AbstractUser):
     address = models.TextField()
     phone = models.CharField(max_length=10)
     profile_pic = models.ImageField(upload_to='profiles/')
