@@ -48,7 +48,6 @@ class Donation(models.Model):
         ('Pending','รอการยืนยัน'),
         ('Recieve','ได้รับของบริจาค')
     )
-
     TYPE = (
         ('MED', 'อุปกรณ์ทางการเเพทย์'),
         ('GARMENT', 'เครื่องนุ่งห่ม'),

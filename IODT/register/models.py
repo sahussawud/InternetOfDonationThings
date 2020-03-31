@@ -12,6 +12,7 @@ class User(AbstractUser):
     address = models.TextField()
     phone = models.CharField(max_length=10)
     profile_pic = models.ImageField(upload_to='profiles/')
+
 class Recipient(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rating = models.FloatField()
