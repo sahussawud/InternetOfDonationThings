@@ -1,7 +1,7 @@
 {% extends "base2.html" %}
 {% block content %}
 
-<h2>Register</h2>
+<h2>Register Step 1</h2>
 <button type="button" class="btn btn-success" onclick="fill()">Fill</button>
 <form method="POST">
     {% csrf_token %}
@@ -33,7 +33,7 @@
 
         </div>
     {% endfor %}
-    <button type="submit" class="btn btn-success mb-5">Sign up</button>
+    <button type="submit" class="btn btn-success mb-5">Next</button>
 </form>
 
 <script>
@@ -53,9 +53,9 @@
         document.getElementById('id_username').value = 'ongsuwannoo'
         document.getElementById('id_password1').value = 'ABCD_123456789'
         document.getElementById('id_password2').value = 'ABCD_123456789'
-        document.getElementById('id_first_name').value = 'First'
-        document.getElementById('id_last_name').value = 'Last'
-        document.getElementById('id_address').value = 'Address'
+        // document.getElementById('id_first_name').value = 'First'
+        // document.getElementById('id_last_name').value = 'Last'
+        // document.getElementById('id_address').value = 'Address'
         document.getElementById('id_email').value = 'admin@admin.com'
         document.getElementById('id_phone').value = '0824200568'
     }
