@@ -51,6 +51,8 @@ def my_login(request): # function login base django
     return render(request, 'register/my_login.html',context=context)
 
 def register(request):
+    # if request.user.is_authenticated:
+    #     my_logout(request)
     context = {}
     context['list_open_row'] = ["username", "first_name", "email"]
     context['list'] = ["username", "password1", "password2", "first_name", "last_name", "email", "phone"]
@@ -65,11 +67,13 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return redirect('register/register2.html')
     else:
         form = regForm()
         context['form'] = form
 
     return render(request, 'register/register.html', context)
 
-    
+def register2(request):
+    context = {}
+    return render(request, 'register/register2.html', context)

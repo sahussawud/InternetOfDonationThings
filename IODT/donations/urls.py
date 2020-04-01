@@ -6,5 +6,5 @@ urlpatterns = [
     # path('complete/', views.complete, name='complete'),
     # path('activate/',views.activate_list, name='activate_list'),
     # path('activate/<int:id_thing>/',views.activate, name='activate'),
-    path('', views.register, name='register')
+    path('', views.register, name='register_donations')
 ]
