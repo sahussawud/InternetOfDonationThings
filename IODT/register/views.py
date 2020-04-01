@@ -47,4 +47,4 @@ def my_login(request): # function login base django
                 'error': 'Wrong username or password'
             }
 
-        return redirect('index')
+    return render(request, 'register/my_login.html',context=context)

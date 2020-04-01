@@ -6,19 +6,20 @@ from django.shortcuts import redirect, render
 
 from donations.forms import DonationForm, PhotoForm
 from donations.models import Album, Picture
+from register.models import Doner
 
 
 # Create your views here.
 @login_required
 def register_donations(request):
-    context={}
+    contexts={}
     # Pictureformset = modelformset_factory(Picture, form=PhotoForm, fields=('url',), extra=3)
     if request.method == 'POST':
         # formset = Pictureformset(request.POST, request.FILES)
         form = DonationForm(request.POST)
         if form.is_valid():
             new_form = form.save(commit=False)
-            new_form.donor = settings.AUTH_USER_MODEL
+            new_form.donor = Doner.objects.get(user=settings.AUTH_USER_MODEL)
             # create album for pic
             if request.FILES.getlist('images'):
                 album = Album(name='Album of ' + request.POST.get['name'])
@@ -34,12 +35,13 @@ def register_donations(request):
                 context['success'] = 'บันทึกสำเร็จ'
         else:
                 context['danger'] = 'บันทึกไม่สำเร็จ'
+
     else:
         # formset = Pictureformset()
         form = DonationForm()
-    
-    context['form'] = form
-    return render(request, 'donations/register_donations.html', context=context) 
+
+    contexts['form'] = form
+    return render(request, 'donations/register_donations.html', context=contexts) 
 
 def register(request):
     return redirect('register_donations')
