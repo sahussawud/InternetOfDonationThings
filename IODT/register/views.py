@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.context_processors import request
 from django.contrib.auth.decorators import login_required
+from register.forms import regForm
 
 @login_required
 def ChangePassword(request):
@@ -48,3 +49,27 @@ def my_login(request): # function login base django
             }
 
     return render(request, 'register/my_login.html',context=context)
+
+def register(request):
+    context = {}
+    context['list_open_row'] = ["username", "first_name", "email"]
+    context['list'] = ["username", "password1", "password2", "first_name", "last_name", "email", "phone"]
+    context['list_close_row'] = ["password2", "last_name", "phone"]
+
+    if request.method == 'POST':
+        form = regForm(request.POST)
+        context['form'] = form
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = regForm()
+        context['form'] = form
+
+    return render(request, 'register/register.html', context)
+
+    
