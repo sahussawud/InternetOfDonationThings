@@ -8,22 +8,22 @@
         <div class="col">
 
             <form method="post" action="{% url 'register' %}" id="image-form" enctype="multipart/form-data">
-                {{ formset.management_form }}
+                <!-- {{ formset.management_form }}
                 {% for form in formset %}
                     {% for field in form %}
-                    <!-- <img src="https://www.claremontmedicalpractice.co.uk/themes/custom/claremont/images/galleryicon.png"
-                    id="preview" class="browse" width="370px">
-               <br> -->
                         {{ field.label_tag }} {{ field }}
                          <br>
+                         
                     {% endfor %}
-                {% endfor %}
+                {% endfor %} -->
                 <!-- <input type="file" name="img[]" class="file" accept="image/*"> -->
                 <!-- <input type="text" class="form-control" disabled placeholder="Upload File" id="file">-->
                 
                 <!-- <button type="button" class="btn btn-primary browse" style="width: 370px;" name="picture">choose
                     image</button> -->
-                <br><br>
+                    <input type="file" name="images" multiple>
+                    <br><br>
+
             <!-- </form> -->
         </div>
 
@@ -98,5 +98,7 @@
 
 </div>
 </div>
+
+
 
 {% endblock content %}

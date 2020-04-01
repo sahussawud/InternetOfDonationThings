@@ -64,9 +64,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="" tabindex="-1" >activate things</a>
                 </li>
+                <li class="nav-item dropdown">
+                {% if user.is_authenticated %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Welcome {{ user.get_username }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="#">My donations</a>
+                        <a class="dropdown-item" href="{% url 'ChangePassword' %}">Change Password</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'my_logout' %}">logout</a>
+                    </div>
+                  
+                {% else %}
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                     Login
                 </button>
+                {% endif %}
+            </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

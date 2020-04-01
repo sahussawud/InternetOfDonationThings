@@ -1,27 +1,45 @@
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.forms import FileInput, modelformset_factory
+from django.forms.models import modelform_factory
 from django.shortcuts import redirect, render
-from django.forms import modelformset_factory, FileInput
-from donations.forms import DonationForm
-from donations.models import Picture
+
+from donations.forms import DonationForm, PhotoForm
+from donations.models import Album, Picture
 
 
 # Create your views here.
+@login_required
 def register_donations(request):
-    Pictureformset = modelformset_factory(Picture, fields=('url',), extra=3, labels={'url':'เลือกรูปภาพ'},
-                                         widgets={'name': FileInput(attrs={'class': 'file'})})
+    context={}
+    # Pictureformset = modelformset_factory(Picture, form=PhotoForm, fields=('url',), extra=3)
     if request.method == 'POST':
-        formset = Pictureformset(request.POST, request.FILES)
+        # formset = Pictureformset(request.POST, request.FILES)
         form = DonationForm(request.POST)
-        if formset.is_valid():
-            # formset.save()
-            print('Form is valid')
-            # do something.
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.donor = settings.AUTH_USER_MODEL
+            # create album for pic
+            if request.FILES.getlist('images'):
+                album = Album(name='Album of ' + request.POST.get['name'])
+                for file in request.FILES.getlist('images'):
+                    pic = Picture(
+                            name=request.POST.get['name'],
+                            url=file,
+                            album=album
+                    )
+                    pic.save()
+                new_form.album = album
+                new_form.save
+                context['success'] = 'บันทึกสำเร็จ'
+        else:
+                context['danger'] = 'บันทึกไม่สำเร็จ'
     else:
-        formset = Pictureformset()
+        # formset = Pictureformset()
         form = DonationForm()
-    return render(request, 'donations/register_donations.html', {
-        'DonationForm': form,
-        'formset': formset
-    }) 
+    
+    context['form'] = form
+    return render(request, 'donations/register_donations.html', context=context) 
 
 def register(request):
     return redirect('register_donations')

@@ -40,8 +40,8 @@ class Project(models.Model):
     recipient = models.ForeignKey(Recipient,on_delete=models.SET_NULL, null=True)
 
 class Album(models.Model):
-    name = models.CharField(max_length=30)
-    desc = models.CharField(max_length=255)
+    name = models.CharField(max_length=30,blank=True)
+    desc = models.CharField(max_length=255,blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
 
 class Picture(models.Model):
