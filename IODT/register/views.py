@@ -37,7 +37,8 @@ def my_login(request): # function login base django
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            next_url = request.POST.get('next_url')
+            next_url = request.POST.get('next')
+            print(next_url)
             if next_url:
                 return redirect(next_url)
             else:

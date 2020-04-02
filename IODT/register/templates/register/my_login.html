@@ -4,40 +4,27 @@
 
 <div class="container">
     <div class="row">
-
         <div class="col">
             <form method="POST" action="{% url 'login' %}" class="form w-50 m-auto">
                 {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="username">Username:</label>
-                                    <input type="text" class="form-control" id="username" name="username"
-                                        value="{{username}}">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password:</label>
-                                    <input type="password" class="form-control" id="password" name="password"
-                                        value="{{password}}">
-                                </div>
-                                <button type="submit" class="btn btn-success">Login</button>
-                                <button type="button" class="btn btn-secondary">Close</button>
-                                
-                            </div>
-                        </div>
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                            value="{{username}}">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            value="{{password}}">
+                    </div>
+                    <button type="submit" class="btn btn-success">Login</button>
+                    <button type="button" class="btn btn-secondary">Close</button>
             </form>
-
-
         </div>
-
-
-
     </div>
-
-
-</div>
-
-</div>
 </div>
 
 {% endblock content %}

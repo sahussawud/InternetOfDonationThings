@@ -143,6 +143,14 @@
         reader.readAsDataURL(this.files[0]);
     });
 
+    function pathLogin(event){
+        var url = window.location.pathname;
+
+        parent.location.hash = '?next='+url;
+        // ?next=/donations/register/
+    }
+    
+
 
 </script>
 </body>
