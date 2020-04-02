@@ -77,4 +77,8 @@ def register(request):
 
 def register2(request):
     context = {}
+
+    if request.method == 'POST':
+        form_name = request.POST.get('form_name')
+        print(form_name)
     return render(request, 'register/register2.html', context)

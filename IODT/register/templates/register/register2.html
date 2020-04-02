@@ -2,7 +2,110 @@
 {% block content %}
 
 <h2>Register Step 2</h2>
-<form method="POST">
+<form onchange="change_form(event)">
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="donor">
+        <label class="form-check-label" for="exampleRadios1">
+            Donor
+        </label>
+    </div>
+    
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="recipient">
+        <label class="form-check-label" for="exampleRadios2">
+            Recipient
+        </label>
+    </div>
+</form>
+
+<form class="mt-3" id="recipient_form_select" style="display: none;" onchange="change_form(event)">
+    <div class="form-check col-2" >
+        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="organization">
+        <label class="form-check-label" for="exampleRadios3">
+            Organization
+        </label>
+    </div>
+    <div class="form-check col-2">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios4" value="person">
+        <label class="form-check-label" for="exampleRadios4">
+            Person
+        </label>
+    </div>
+</form>
+
+<form method="POST" id="donor_form" style="display: none;" onchange="change_form(event)">
+    <input type="text" value="donor_form" name="form_name" style="display: none;">
+    <h4 class="text-success mt-3 mb-3">donor_form</h4>
+    {% csrf_token %}
+    <div class="row">
+        <div class="form-group col">
+            <label>First Name:</label><br>
+            <input type="text" name="first_name" class="form-control" autofocus="" required="" id="first_name" value="Jakkrapat">
+        </div>
+         <div class="form-group col">
+            <label>Last Name:</label><br>
+            <input type="text" name="last_name" class="form-control" autofocus="" required="" id="last_name" value="Suwanno">
+        </div>
+        <div class="form-group col">
+            <div class="row">
+                <div class="col">
+                    <label>Sex:</label><br>
+                    <select class="form-control" onchange="change_sex()" id="sex">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>other</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label>&nbsp;</label><br>
+                    <input type="text" class="form-control" autofocus="" required="" name="sex_other" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Address:</label><br>
+        <textarea class="form-control" name="address" id="address" rows="3">A</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success mb-5">Next</button>
+</form>
+
+<form method="POST" id="recipient_form_organization" style="display: none;" onchange="change_form(event)">
+    <input type="text" value="recipient_form_organization" name="form_name" style="display: none;">
+    <h4 class="text-success mt-3 mb-3">recipient_form_organization</h4>
+    {% csrf_token %}
+    <div class="row">
+        <div class="form-group col">
+            <label>Organization name:</label><br>
+            <input type="text" name="first_name" class="form-control" autofocus="" required="" id="first_name">
+        </div>
+         <div class="form-group col">
+            <label>Establish date:</label><br>
+            <input type="text" name="last_name" class="form-control" autofocus="" required="" id="last_name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Address:</label><br>
+        <textarea class="form-control" id="address" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Vision:</label><br>
+        <textarea class="form-control" id="address" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Description:</label><br>
+        <textarea class="form-control" id="address" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success mb-5">Next</button>
+</form>
+
+<form method="POST" id="recipient_form_person" style="display: none;" onchange="change_form(event)">
+    <input type="text" value="recipient_form_person" name="form_name" style="display: none;">
+    <h4 class="text-success mt-3 mb-3">recipient_form_person</h4>
     {% csrf_token %}
     <div class="row">
         <div class="form-group col">
@@ -25,7 +128,7 @@
                 </div>
                 <div class="col">
                     <label>&nbsp;</label><br>
-                    <input type="text" name="last_name" class="form-control" autofocus="" required="" id="sex_other" disabled>
+                    <input type="text" class="form-control" autofocus="" required="" name="sex_other" disabled>
                 </div>
             </div>
         </div>
@@ -35,17 +138,58 @@
         <textarea class="form-control" id="address" rows="3"></textarea>
     </div>
 
+    <div class="form-group">
+        <label>Description:</label><br>
+        <textarea class="form-control" id="address" rows="3"></textarea>
+    </div>
+
     <button type="submit" class="btn btn-success mb-5">Next</button>
 </form>
 
 <script>
     function change_sex() {
         var sex = document.getElementById('sex').value;
-        if (sex == 'other') 
-            document.getElementById('sex_other').disabled = false;
+        var set_value;
+
+        if (sex == 'other')
+            set_value = false;
         else
-            document.getElementById('sex_other').disabled = true;
+            set_value = true;
+
+        let lis = document.getElementsByName('sex_other');
+        lis.forEach((i) => {
+            i.disabled = set_value
+        })
     }
+
+    var check_form = '';
+    function change_form(event) {
+        console.log(event.explicitOriginalTarget.value);
+        var form_name = event.explicitOriginalTarget.value;
+        if (form_name === "donor") {
+            document.getElementById('recipient_form_select').style.display = 'none';
+            document.getElementById('donor_form').style.display = 'block';
+            document.getElementById('recipient_form_organization').style.display = 'none';
+            document.getElementById('recipient_form_person').style.display = 'none';
+            check_form = 'donor';
+        } else if (form_name === "recipient") {
+            document.getElementById('donor_form').style.display = 'none';
+            document.getElementById('recipient_form_select').style.display = 'block';
+            // document.getElementById('recipient_form').style.display = 'block';
+            check_form = 'recipient';
+        }
+        if (check_form === 'recipient'){
+            if (form_name === 'organization') {
+                document.getElementById('recipient_form_organization').style.display = 'block';
+                document.getElementById('recipient_form_person').style.display = 'none';
+            } else if (form_name === 'person'){
+                document.getElementById('recipient_form_organization').style.display = 'none';
+                document.getElementById('recipient_form_person').style.display = 'block';
+            }
+
+        }
+    }
+
 
 </script>
 
