@@ -1,0 +1,57 @@
+{% extends "base2.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="row">
+        <h2>การบริจาคของฉัน</h2>
+        
+    </div>
+    <div class="row">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    
+                    <th scope="col">ลำดับ</th>
+                    <th scope="col">วันที่ลงทะเบียน</th>
+                    <th scope="col">ชื่อ</th>
+                    <th scope="col">ประเภท</th>
+                    <th scope="col">สภาพ</th>
+                    <th scope="col">จำนวน</th>
+                    
+                    <th scope="col">สถานะ</th>
+                    <th scope="col">ให้โครงการ</th>
+                    <th scope="col">รูปภาพ</th>
+             
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in mydonation %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{donation.date}}</td>
+                    <td>{{donation.name}}</td>
+                    <td>{{donation.get_dtype_display}}</td>
+                    <td>{{donation.get_condition_display}}</td>
+                    <td>{{donation.quantity}}</td>
+                    <td>{{donation.get_status_display}}</td>
+                    {% if donation.project %}
+                        <td>{{donation.project.name}}</td>
+                    {% else %}
+                        <td><i class="material-icons" style="font-size:30px;color:red">cancel</i></td>
+                    {% endif %}
+                    <td>
+                        <a href="">
+                            <div class="btn btn-success" id="">ดูรูป</div>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock content %}

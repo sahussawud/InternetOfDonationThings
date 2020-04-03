@@ -74,14 +74,14 @@ class Donation(models.Model):
         ('5','ใหม่'),
     )
     name = models.CharField(max_length=255)
-    status = models.CharField(max_length=20, choices=STATUS, default=STATUS[0])
-    _type = models.CharField(max_length=40, choices=TYPE)
+    status = models.CharField(max_length=20, choices=STATUS, default=STATUS[0][0])
+    dtype = models.CharField(max_length=40, choices=TYPE)
     desc = models.TextField()
     condition = models.CharField(max_length=1, choices=CONDITION)
     quantity = models.IntegerField(default=1)
     date = models.DateField(auto_now_add=True)
     donor = models.ForeignKey(Doner, on_delete=models.CASCADE, default=0)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=0)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
     album = models.OneToOneField(Album, on_delete=models.CASCADE, null=True)
 

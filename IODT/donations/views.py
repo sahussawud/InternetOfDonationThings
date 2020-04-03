@@ -4,9 +4,10 @@ from django.forms import FileInput, modelformset_factory
 from django.forms.models import modelform_factory
 from django.shortcuts import redirect, render
 
-from donations.forms import DonationForm, PhotoForm
-from donations.models import Album, Picture
+from donations.forms import DonationForm, CreateProjectForm
+from donations.models import Album, Picture, Donation
 from register.models import Doner
+from django.contrib.auth import get_user_model
 
 
 # Create your views here.
@@ -19,22 +20,25 @@ def register_donations(request):
         form = DonationForm(request.POST)
         if form.is_valid():
             new_form = form.save(commit=False)
-            new_form.donor = Doner.objects.get(user=settings.AUTH_USER_MODEL)
+            Name = request.POST.get('name')[:3]
+            new_form.donor = Doner.objects.get(user=request.user)
             # create album for pic
             if request.FILES.getlist('images'):
-                album = Album(name='Album of ' + request.POST.get['name'])
+                album = Album(name='Album of ' + Name)
+                album.save()
                 for file in request.FILES.getlist('images'):
                     pic = Picture(
-                            name=request.POST.get['name'],
+                            name=Name,
                             url=file,
                             album=album
                     )
                     pic.save()
-                new_form.album = album
-                new_form.save
-                context['success'] = 'บันทึกสำเร็จ'
+            new_form.album = album
+            new_form.save()
+            contexts['success'] = 'บันทึกสำเร็จ'
         else:
-                context['danger'] = 'บันทึกไม่สำเร็จ'
+            contexts['danger'] = 'บันทึกไม่สำเร็จ'
+            form = DonationForm()
 
     else:
         # formset = Pictureformset()
@@ -43,5 +47,18 @@ def register_donations(request):
     contexts['form'] = form
     return render(request, 'donations/register_donations.html', context=contexts) 
 
-def register(request):
-    return redirect('register_donations')
+@login_required
+def donation_list(request):
+    contexts={}
+    Doner_ = Doner.objects.get(user=request.user)
+    mydonation = Donation.objects.filter(donor=Doner_).order_by('date','name')
+    contexts['doner'] = Doner_
+    contexts['mydonation'] = mydonation
+    return render(request, 'donations/donation_list.html', context=contexts) 
+
+@login_required
+def create_project(request):
+    contexts = {}
+    form = CreateProjectForm()
+    contexts['form'] = form
+    return render(request, 'donations/register_project.html', context=contexts)

@@ -4,10 +4,27 @@
 
 <div class="container">
     <div class="row">
+        {% if success %}
+        <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+            <strong>{{ success }}</strong> Your donations was registerd to your inventory
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% elif danger %}
+        <div class="alert alert-danger alert-dismissible fade show w-100" role="alert"></div>
+            <strong>{{ danger }}</strong> You should check in on some of those fields below.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
 
+        {% endif %}
+    </div>
+    <div class="row">
         <div class="col">
 
-            <form method="post" action="{% url 'register' %}" id="image-form" enctype="multipart/form-data">
+            <form method="post" action="{% url 'register_donations' %}" id="image-form" enctype="multipart/form-data">
                 <!-- {{ formset.management_form }}
                 {% for form in formset %}
                     {% for field in form %}
@@ -21,6 +38,7 @@
                 
                 <!-- <button type="button" class="btn btn-primary browse" style="width: 370px;" name="picture">choose
                     image</button> -->
+                    <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
                     <input type="file" name="images" multiple>
                     <br><br>
 
@@ -82,7 +100,7 @@
                     <textarea class="form-control" id="exampleTextarea" rows="2">enjoy your gift :)</textarea> -->
                 {{ form.as_p }}
                 <br>
-                <button type="summit" class="btn btn-primary btn-lg btn-block">submit</button>
+                <button type="summit" class="btn btn-primary btn-lg btn-block" >submit</button>
                 <br>
 
             </form>
