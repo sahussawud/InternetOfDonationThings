@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from register.views import my_login
+from register.views import my_login, my_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('management/', include('management.urls')),
     path('donations/', include('donations.urls')),
     path('login/', my_login, name='login'),
+    path('profile/', my_profile, name='profile'),
 ]

@@ -34,7 +34,7 @@
 </form>
 
 <form method="POST" id="donor_form" style="display: none;" onchange="change_form(event)">
-    <input type="text" value="donor_form" name="form_name" style="display: none;">
+    <input type="hidden" name="form_name" value="donor_form">
     <h4 class="text-success mt-3 mb-3">donor_form</h4>
     {% csrf_token %}
     <div class="row">

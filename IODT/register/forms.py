@@ -31,7 +31,7 @@ class regForm(UserCreationForm):
     email = forms.EmailField(widget=
         forms.TextInput(attrs={'class':'form-control'}),
     )
-    # profile_pic = forms.ImageField(required=False)
+    profile_pic = forms.ImageField(required=True)
 
     class Meta:
         model = user
@@ -45,7 +45,7 @@ class regForm(UserCreationForm):
             'email',
             'phone',
             'is_accept',
-            # 'profile_pic',
+            'profile_pic',
         )
 
     def save(self, commit=True):
@@ -56,7 +56,7 @@ class regForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         user.phone = self.cleaned_data['phone']
         user.is_accept = self.cleaned_data['is_accept']
-        # user.profile_pic = self.cleaned_data['profile_pic']
+        user.profile_pic = self.cleaned_data['profile_pic']
 
         if commit:
             user.save()

@@ -61,7 +61,7 @@ def register(request):
     context['list_close_row'] = ["password2", "last_name", "phone"]
 
     if request.method == 'POST':
-        form = regForm(request.POST)
+        form = regForm(request.POST, request.FILES)
         context['form'] = form
         if form.is_valid():
             form.save()
@@ -69,7 +69,7 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('register/register2.html')
+            return redirect('register2')
     else:
         form = regForm()
         context['form'] = form
@@ -122,4 +122,9 @@ def register2(request):
                     sex = sex[0]
                 )
                 recipient_form_person.save()
+        return redirect('profile')
     return render(request, 'register/register2.html', context)
+
+def my_profile(request):
+    context = {}
+    return render(request, 'register/profile.html', context)
