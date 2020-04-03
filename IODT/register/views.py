@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.template.context_processors import request
 from django.contrib.auth.decorators import login_required
 from register.forms import regForm
+from register.models import *
 
 @login_required
 def ChangePassword(request):
@@ -77,8 +78,20 @@ def register(request):
 
 def register2(request):
     context = {}
-
     if request.method == 'POST':
         form_name = request.POST.get('form_name')
-        print(form_name)
+        if form_name == 'donor_form':
+            sex = request.POST.get('sex')
+            if sex == 'other':
+                sex = request.POST.get('sex_other')
+            donor_form = Doner(
+                user = request.user,
+                sex = sex[0],
+                donate_amount = 0,
+                helping_amount = 0
+            )
+            user = request.user
+            user.address = request.POST.get('address')
+            user.save()
+            donor_form.save()
     return render(request, 'register/register2.html', context)
