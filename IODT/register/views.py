@@ -125,6 +125,7 @@ def register2(request):
         return redirect('profile')
     return render(request, 'register/register2.html', context)
 
+@login_required
 def my_profile(request):
     context = {}
     return render(request, 'register/profile.html', context)

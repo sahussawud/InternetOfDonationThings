@@ -1,0 +1,59 @@
+{% extends "base2.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="text-center mb-5">
+        <h2>My Profile </h2>
+    </div>
+
+    <div class="row" style="height: 10em;">
+        <div class="form-group col-3 text-center">
+            <img src="/media/profiles/9.jpg" alt="profile" height="150" width="150"> 
+            <h5><label class="text-success">Username</label><br><label> ongsuwanno</label></h5>
+        </div>
+        <div class="col" name="donor">
+            <div class="mb-2">
+                <h2>ประเภท : <label>Donor</label></h2>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label>First Name:</label><br>
+                    <input type="text" name="first_name" class="form-control" autofocus="" required="" id="first_name" disabled value="Jakkrapat">
+                </div>
+                 <div class="form-group col">
+                    <label>Last Name:</label><br>
+                    <input type="text" name="last_name" class="form-control" autofocus="" required="" id="last_name" disabled value="Suwanno">
+                </div>
+                <div class="form-group col">
+                    <label>Sex:</label><br>
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="Male">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label>Email:</label><br>
+                    <input type="text" name="email" class="form-control" autofocus="" required="" id="email" disabled value="ongsuwanno@gmail.com">
+                </div>
+                 <div class="form-group col">
+                    <label>Phone:</label><br>
+                    <input type="text" name="phone" class="form-control" autofocus="" required="" id="phone" disabled value="0824200568">
+                </div>
+                <div class="form-group col">
+                    <label>Create date:</label><br>
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="01 / 02 / 2563">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Address:</label><br>
+                <textarea class="form-control" name="address" id="address" rows="3" disabled>aaaaa</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+Footer of Login page!!!
+{% endblock %}
