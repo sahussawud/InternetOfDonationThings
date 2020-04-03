@@ -80,10 +80,12 @@ def register2(request):
     context = {}
     if request.method == 'POST':
         form_name = request.POST.get('form_name')
+        sex = request.POST.get('sex')
+
+        if sex == 'other':
+            sex = request.POST.get('sex_other')
+
         if form_name == 'donor_form':
-            sex = request.POST.get('sex')
-            if sex == 'other':
-                sex = request.POST.get('sex_other')
             donor_form = Doner(
                 user = request.user,
                 sex = sex[0],
@@ -94,4 +96,30 @@ def register2(request):
             user.address = request.POST.get('address')
             user.save()
             donor_form.save()
+
+        else:
+            recipient_form = Recipient(
+                user = request.user,
+                rating = 0,
+                response_rate = 0,
+                desc = request.POST.get('description')
+            )
+            recipient_form.save()
+            recipient_form = Recipient.objects.filter(user=request.user.id)[0]
+
+            if form_name == 'recipient_form_organization':
+                recipient_form_organization = Organization(
+                    recipient = recipient_form,
+                    name = request.POST.get('description'),
+                    establish_date = request.POST.get('establish_date'),
+                    vision = request.POST.get('vision')
+                )
+                recipient_form_organization.save()
+
+            if form_name == 'recipient_form_person':
+                recipient_form_person = People(
+                    recipient = recipient_form,
+                    sex = sex[0]
+                )
+                recipient_form_person.save()
     return render(request, 'register/register2.html', context)
