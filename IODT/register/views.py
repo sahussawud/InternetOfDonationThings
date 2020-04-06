@@ -79,6 +79,7 @@ def register(request):
 def register2(request):
     context = {}
     if request.method == 'POST':
+        user = request.user
         form_name = request.POST.get('form_name')
         sex = request.POST.get('sex')
 
@@ -92,8 +93,9 @@ def register2(request):
                 donate_amount = 0,
                 helping_amount = 0
             )
-            user = request.user
             user.address = request.POST.get('address')
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
             user.save()
             donor_form.save()
 
@@ -110,10 +112,12 @@ def register2(request):
             if form_name == 'recipient_form_organization':
                 recipient_form_organization = Organization(
                     recipient = recipient_form,
-                    name = request.POST.get('description'),
+                    name = request.POST.get('organization_name'),
                     establish_date = request.POST.get('establish_date'),
                     vision = request.POST.get('vision')
                 )
+                user.address = request.POST.get('address')
+                user.save()
                 recipient_form_organization.save()
 
             if form_name == 'recipient_form_person':
@@ -121,6 +125,10 @@ def register2(request):
                     recipient = recipient_form,
                     sex = sex[0]
                 )
+                user.address = request.POST.get('address')
+                user.first_name = request.POST.get('first_name')
+                user.last_name = request.POST.get('last_name')
+                user.save()
                 recipient_form_person.save()
         return redirect('profile')
     return render(request, 'register/register2.html', context)
@@ -128,4 +136,56 @@ def register2(request):
 @login_required
 def my_profile(request):
     context = {}
+    user = request.user
+    donor = Doner.objects.filter(user_id=user.id)
+    recipient = Recipient.objects.filter(user_id=user.id)
+    if donor:
+        donor = donor[0]
+        context = {
+            'type': 'donor',
+            'username': user.username,
+            'profile_pic': user.profile_pic,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'sex': donor.sex,
+            'email': user.email,
+            'phone': user.phone,
+            'create_date': user.date_joined.strftime("%d / %m / %Y"),
+            'address': user.address
+        }
+    if recipient:
+        recipient = recipient[0]
+        recipient_organization = Organization.objects.filter(recipient_id=recipient.id)
+        recipient_people = People.objects.filter(recipient_id=recipient.id)
+        if recipient_organization:
+            recipient_organization = recipient_organization[0]
+            context = {
+                'type': 'recipient_organization',
+                'username': user.username,
+                'profile_pic': user.profile_pic,
+                'email': user.email,
+                'phone': user.phone,
+                'create_date': user.date_joined.strftime("%d / %m / %Y"),
+                'address': user.address,
+                'description': recipient.desc,
+                'organization_name': recipient_organization.name,
+                'establish_date': recipient_organization.establish_date.strftime("%d / %m / %Y"),
+                'vision': recipient_organization.vision
+            }
+        if recipient_people:
+            recipient_people = recipient_people[0]
+            context = {
+                'type': 'recipient_people',
+                'username': user.username,
+                'profile_pic': user.profile_pic,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'sex': recipient_people.sex,
+                'email': user.email,
+                'phone': user.phone,
+                'create_date': user.date_joined.strftime("%d / %m / %Y"),
+                'address': user.address,
+                'description': recipient.desc
+            }
+
     return render(request, 'register/profile.html', context)

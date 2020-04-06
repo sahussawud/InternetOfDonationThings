@@ -8,9 +8,10 @@
 
     <div class="row" style="height: 10em;">
         <div class="form-group col-3 text-center">
-            <img src="/media/profiles/9.jpg" alt="profile" height="150" width="150"> 
-            <h5><label class="text-success">Username</label><br><label> ongsuwanno</label></h5>
+            <img src="/media/{{profile_pic}}" alt="profile" height="150" width="150"> 
+            <h5><label class="text-success">Username</label><br><label> {{username}}</label></h5>
         </div>
+        {% if type == 'donor' %}
         <div class="col" name="donor">
             <div class="mb-2">
                 <h2>ประเภท : <label>Donor</label></h2>
@@ -18,36 +19,125 @@
             <div class="row">
                 <div class="form-group col">
                     <label>First Name:</label><br>
-                    <input type="text" name="first_name" class="form-control" autofocus="" required="" id="first_name" disabled value="Jakkrapat">
+                    <input type="text" name="first_name" class="form-control" autofocus="" required="" id="first_name" disabled value="{{first_name}}">
                 </div>
                  <div class="form-group col">
                     <label>Last Name:</label><br>
-                    <input type="text" name="last_name" class="form-control" autofocus="" required="" id="last_name" disabled value="Suwanno">
+                    <input type="text" name="last_name" class="form-control" autofocus="" required="" id="last_name" disabled value="{{last_name}}">
                 </div>
                 <div class="form-group col">
                     <label>Sex:</label><br>
-                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="Male">
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="{{sex}}">
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col">
                     <label>Email:</label><br>
-                    <input type="text" name="email" class="form-control" autofocus="" required="" id="email" disabled value="ongsuwanno@gmail.com">
+                    <input type="text" name="email" class="form-control" autofocus="" required="" id="email" disabled value="{{email}}">
                 </div>
                  <div class="form-group col">
                     <label>Phone:</label><br>
-                    <input type="text" name="phone" class="form-control" autofocus="" required="" id="phone" disabled value="0824200568">
+                    <input type="text" name="phone" class="form-control" autofocus="" required="" id="phone" disabled value="{{phone}}">
                 </div>
                 <div class="form-group col">
                     <label>Create date:</label><br>
-                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="01 / 02 / 2563">
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="{{create_date}}">
                 </div>
             </div>
             <div class="form-group">
                 <label>Address:</label><br>
-                <textarea class="form-control" name="address" id="address" rows="3" disabled>aaaaa</textarea>
+                <textarea class="form-control" name="address" id="address" rows="3" disabled>{{address}}</textarea>
             </div>
         </div>
+        {% endif %}
+        {% if type == 'recipient_organization' %}
+        <div class="col" name="recipient_organization">
+            <div class="mb-2">
+                <h2>ประเภท : <label>Recipient Organization</label></h2>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label>Organization name:</label><br>
+                    <input type="text" name="organization_name" class="form-control" autofocus="" required="" disabled id="organization_name" value="{{organization_name}}">
+                </div>
+                <div class="form-group col">
+                    <label>Establish date:</label><br>
+                    <input type="text" name="establish_date" class="form-control" autofocus="" required="" disabled id="establish_date" value="{{establish_date}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label>Email:</label><br>
+                    <input type="text" name="email" class="form-control" autofocus="" required="" id="email" disabled value="{{email}}">
+                </div>
+                 <div class="form-group col">
+                    <label>Phone:</label><br>
+                    <input type="text" name="phone" class="form-control" autofocus="" required="" id="phone" disabled value="{{phone}}">
+                </div>
+                <div class="form-group col">
+                    <label>Create date:</label><br>
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="{{create_date}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Address:</label><br>
+                <textarea class="form-control" id="address" name="address" disabled rows="3">{{address}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Vision:</label><br>
+                <textarea class="form-control" id="vision" name="vision" disabled rows="3">{{vision}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Description:</label><br>
+                <textarea class="form-control" id="description" name="description" disabled rows="3">{{description}}</textarea>
+            </div>
+        </div>
+        {% endif %}
+        {% if type == 'recipient_people' %}
+        <div class="col" name="recipient_people">
+            <div class="mb-2">
+                <h2>ประเภท : <label>Recipient Person</label></h2>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label>First Name:</label><br>
+                    <input type="text" name="first_name" class="form-control" autofocus="" required="" id="first_name" disabled value="{{first_name}}">
+                </div>
+                 <div class="form-group col">
+                    <label>Last Name:</label><br>
+                    <input type="text" name="last_name" class="form-control" autofocus="" required="" id="last_name" disabled value="{{last_name}}">
+                </div>
+                <div class="form-group col">
+                    <label>Sex:</label><br>
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="{{sex}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label>Email:</label><br>
+                    <input type="text" name="email" class="form-control" autofocus="" required="" id="email" disabled value="{{email}}">
+                </div>
+                 <div class="form-group col">
+                    <label>Phone:</label><br>
+                    <input type="text" name="phone" class="form-control" autofocus="" required="" id="phone" disabled value="{{phone}}">
+                </div>
+                <div class="form-group col">
+                    <label>Create date:</label><br>
+                    <input type="text" name="sex" class="form-control" autofocus="" required="" id="sex" disabled value="{{create_date}}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Address:</label><br>
+                <textarea class="form-control" name="address" id="address" rows="3" disabled>{{address}}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Description:</label><br>
+                <textarea class="form-control" name="description" id="description" rows="3" disabled>{{description}}</textarea>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 
