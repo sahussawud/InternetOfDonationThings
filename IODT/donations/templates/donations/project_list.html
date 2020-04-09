@@ -1,0 +1,53 @@
+{% extends "base2.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="row">
+        <h2>โครงการของฉัน</h2>
+        
+    </div>
+    <div class="row">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    
+                    <th scope="col">ลำดับ</th>
+                    <th scope="col">วันที่ลงทะเบียน</th>
+                    <th scope="col">ชื่อ</th>
+                    <th scope="col">ประเภทของที่รับ</th>
+                    <th scope="col">สถานะ</th>
+                    <th scope="col">วันปิดการรับบริจาค</th>             
+                    <th scope="col"></th>
+
+             
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{project.create_date}}</td>
+                    <td>{{project.name}}</td>
+                    <td>{{project.requiretype}}</td>
+                    <td>{{project.get_status_display}}</td>
+                    <td>{{project.expire_date}}</td>
+                    <td>
+                        <a href="">
+                            <div class="btn btn-success" id="">ดูสรุปยอด</div>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr >
+                    <td colspan="2">ไม่มีโครงการ</td>
+                </tr>  
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock content %}

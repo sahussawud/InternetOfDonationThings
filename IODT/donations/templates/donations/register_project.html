@@ -4,14 +4,42 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <div class="row">
+                {% if success %}
+                <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+                    <strong>{{ success }}</strong> Your donations was registerd to your inventory
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                {% elif danger %}
+                <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+                    <strong>{{ danger }}</strong> You should check in on some of those fields below.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+        
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-12">
             <h2>สร้างโครงการรับบริจาค</h2>
         </div>
     </div>
+    
+    <form method="post" action="{% url 'create_project' %}" id="image-form" enctype="multipart/form-data">
     <div class="row">
         <div class="col-12">
+            {% csrf_token %}
+            <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
+            <input type="file" name="images" multiple>
+                        <br><br>
             {{form.as_p}}
         </div>
+        <button type="submit" class='btn btn-success'>submit</button>
     </div>
+    </form>
 </div>
 
 {% endblock content %}

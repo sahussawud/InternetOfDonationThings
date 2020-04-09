@@ -1,10 +1,16 @@
 
 
+from email.policy import default
+
 # Create your models here.
 from django.db import models
+from django.db.models.deletion import SET_NULL
 from django.db.models.fields import DateTimeField
 from django.db.models.fields.related import ForeignKey
-from register.models import Recipient, Doner
+
+from datetime import datetime 
+from register.models import Doner, Recipient
+
 
 # from management.models import ClassRoom, Student
 class Location(models.Model):
@@ -20,7 +26,14 @@ class Location(models.Model):
 class RequireType(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=255)
-    amount = models.SmallIntegerField()
+
+    def __str__(self):
+        return self.name
+    
+class Album(models.Model):
+    name = models.CharField(max_length=30,blank=True)
+    desc = models.CharField(max_length=255,blank=True)
+
 class Project(models.Model):
     STATUS = (
         ('open','เปิดรับริจาค'),
@@ -36,13 +49,12 @@ class Project(models.Model):
     address = models.CharField(max_length=255)
     status = models.CharField(max_length=10, choices=STATUS)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    create_date = models.DateField(auto_now_add=True)
     expire_date = models.DateTimeField()
     recipient = models.ForeignKey(Recipient,on_delete=models.SET_NULL, null=True)
+    album = models.OneToOneField(Album, on_delete=models.CASCADE, null=True)
 
-class Album(models.Model):
-    name = models.CharField(max_length=30,blank=True)
-    desc = models.CharField(max_length=255,blank=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+
 
 class Picture(models.Model):
     name = models.CharField(max_length=30, blank=True)
@@ -55,17 +67,17 @@ class Donation(models.Model):
         ('Pending','รอการยืนยัน'),
         ('Recieve','ได้รับของบริจาค')
     )
-    TYPE = (
-        ('MED', 'อุปกรณ์ทางการเเพทย์'),
-        ('GARMENT', 'เครื่องนุ่งห่ม'),
-        ('CONSUMABLE', 'โภคภัณฑ์'),
-        ('CAPITAL','เงิน'),
-        ('SPORT EQUIPMENT', 'อุปกรณ์กีฬา'),
-        ('RECREATION','อุปกรณ์สันทนาการ'),
-        ('COMPUTER', 'คอมพิวเตอร์เเละอุปกรณ์'),
-        ('MUSIC','เครื่องดนตรี'),
-        ('TEACH', 'อุปกรณ์ครุภัณฑ์')
-    )
+    # TYPE = (
+    #     ('MED', 'อุปกรณ์ทางการเเพทย์'),
+    #     ('GARMENT', 'เครื่องนุ่งห่ม'),
+    #     ('CONSUMABLE', 'โภคภัณฑ์'),
+    #     ('CAPITAL','เงิน'),
+    #     ('SPORT EQUIPMENT', 'อุปกรณ์กีฬา'),
+    #     ('RECREATION','อุปกรณ์สันทนาการ'),
+    #     ('COMPUTER', 'คอมพิวเตอร์เเละอุปกรณ์'),
+    #     ('MUSIC','เครื่องดนตรี'),
+    #     ('TEACH', 'อุปกรณ์ครุภัณฑ์')
+    # )
     CONDITION = (
         ('1','ชำรุด'),
         ('2','ต้องซ่อม'),
@@ -75,7 +87,7 @@ class Donation(models.Model):
     )
     name = models.CharField(max_length=255)
     status = models.CharField(max_length=20, choices=STATUS, default=STATUS[0][0])
-    dtype = models.CharField(max_length=40, choices=TYPE)
+    dtype = models.ForeignKey(RequireType, null=True, on_delete=SET_NULL)
     desc = models.TextField()
     condition = models.CharField(max_length=1, choices=CONDITION)
     quantity = models.IntegerField(default=1)
@@ -115,5 +127,3 @@ class Feedback(models.Model):
     sent_date = models.DateTimeField(auto_now_add=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, default=0)
-
-

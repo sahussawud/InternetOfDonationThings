@@ -3,9 +3,16 @@ from django.forms.models import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django import forms
 
+  
+from datetime import datetime
 from donations.models import *
 from donations.widgets import AdvancedFileInput
 
+def validate_past_date(value):
+    if value < datetime.now().date():
+        raise forms.ValidationError(
+                'วันที่เลือกต้องเป็นวันหลังวันปัจจุบัน'
+            )
 
 class DonationForm(ModelForm):
     class Meta:
@@ -23,19 +30,14 @@ class DonationForm(ModelForm):
             'desc': Textarea(attrs={'cols': 40, 'rows': 5   }),
         }
 
-# class PhotoForm(ModelForm):
-#     url = AdvancedFileInput()
-#     class Meta:
-#         model = Picture
-#         fields = ['url']
-#         labels = {
-#             'url': _('เพิ่มรูปภาพ'),
-#         }
-        
 class CreateProjectForm(ModelForm):
+    expire_date = forms.DateField(
+        validators=[validate_past_date]
+        )
+
     class Meta:
         model = Project
-        exclude = ('recipient','location','status')
+        exclude = ('recipient','location','status','album')
         labels = {
             'name': _('ชื่อโครงการ'),
             'desc': _('รายละเอียดโครงการ'),
@@ -48,6 +50,7 @@ class CreateProjectForm(ModelForm):
         widgets = {
             'desc': Textarea(attrs={'cols': 40, 'rows': 5  }),
         }
+
     # Representing the many to many related field in Pizza
     requiretype = forms.ModelMultipleChoiceField(queryset=RequireType.objects.all())
 
@@ -56,13 +59,13 @@ class CreateProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         # Only in case we build the form from an instance
         # (otherwise, 'toppings' list should be empty)
-        if kwargs.get('instance'):
+        if kwargs.get('RequireType'):
             # We get the 'initial' keyword argument or initialize it
             # as a dict if it didn't exist.                
-            initial = kwargs.setdefault('initial', {})
+            initial = kwargs.setdefault('RequireType', {})
             # The widget for a ModelMultipleChoiceField expects
             # a list of primary key for the selected data.
-            initial['RequireType'] = [t.pk for t in kwargs['instance'].RequireType_set.all()]
+            initial['RequireType'] = [t.pk for t in kwargs['RequireType'].RequireType_set.all()]
 
         forms.ModelForm.__init__(self, *args, **kwargs)
 
