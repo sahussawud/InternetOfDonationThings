@@ -4,26 +4,37 @@
 {% load static %}
 <div class="container">
     <div class="row">
+        <div class="col-10">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                    {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
         <h2>การบริจาคของฉัน</h2>
-        
+
     </div>
     <div class="row">
 
         <table class="table">
             <thead>
                 <tr>
-                    
+
                     <th scope="col">ลำดับ</th>
                     <th scope="col">วันที่ลงทะเบียน</th>
                     <th scope="col">ชื่อ</th>
                     <th scope="col">ประเภท</th>
                     <th scope="col">สภาพ</th>
                     <th scope="col">จำนวน</th>
-                    
+
                     <th scope="col">สถานะ</th>
                     <th scope="col">ให้โครงการ</th>
                     <th scope="col">รูปภาพ</th>
-             
+
                 </tr>
             </thead>
             <tbody>
@@ -37,19 +48,19 @@
                     <td>{{donation.quantity}}</td>
                     <td>{{donation.get_status_display}}</td>
                     {% if donation.project %}
-                        <td>{{donation.project.name}}</td>
-                        <td>
-                            <a href="">
-                                <div class="btn btn-success" id="">ดูโครงการ</div>
-                            </a>
-                        </td>
+                    <td>{{donation.project.name}}</td>
+                    <td>
+                        <a href="">
+                            <div class="btn btn-success" id="">ดูโครงการ</div>
+                        </a>
+                    </td>
                     {% else %}
-                        <td><i class="material-icons" style="font-size:30px;color:red">cancel</i></td>
-                        <td>
-                            <a href="{% url 'project_select' donation.id %}">
-                                <div class="btn btn-success" id="">บริจาคตอนนี้</div>
-                            </a>
-                        </td>
+                    <td><i class="material-icons" style="font-size:30px;color:red">cancel</i></td>
+                    <td>
+                        <a href="{% url 'project_select' donation.id %}">
+                            <div class="btn btn-success" id="">บริจาคตอนนี้</div>
+                        </a>
+                    </td>
                     {% endif %}
                 </tr>
                 {% endfor %}

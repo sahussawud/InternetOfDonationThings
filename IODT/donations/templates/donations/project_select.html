@@ -1,0 +1,70 @@
+{% extends "base2.html" %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-6">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                  <div class="col-md-4">
+                    <img src="/media/{{ donation_picture.url }}" class="card-img" alt="...">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{donation.name}}</h5>
+                      <p class="card-text">{{donation.desc}}</p>
+                      <p class="card-text"><small class="text-muted">Last updated {{donation.date}}</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2>โครงการที่รับของบริจาคประเภท : {{ donation.dtype.name }}</h2>
+    </div>
+    <div class="row">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    
+                    <th scope="col">ลำดับ</th>
+                    <th scope="col">วันที่ลงทะเบียน</th>
+                    <th scope="col">ชื่อโครงการ</th>
+                    <th scope="col">สถานะ</th>
+                    <th scope="col">รายละเอียด</th>
+                    <th scope="col">ผู้ดูเเลโครงการ</th>           
+                    <th scope="col"></th>
+
+             
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{project.create_date}}</td>
+                    <td>{{project.name}}</td>
+                    <td>{{project.get_status_display}}</td>
+                    <td>{{project.desc}}</td>
+                    <td>{{project.recipient}}</td>
+                    <td>
+                        <a href="{% url 'add_donation_to_project' donation_id=donation.id project_id=project.id %}">
+                            <div class="btn btn-success" id="">บริจาค</div>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr >
+                    <td colspan="2">ไม่มีโครงการที่อยู่ในเกณฑ์การบริจาค</td>
+                </tr>  
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock content %}

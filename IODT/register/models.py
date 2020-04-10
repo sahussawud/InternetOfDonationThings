@@ -18,6 +18,10 @@ class Recipient(models.Model):
     rating = models.FloatField()
     response_rate = models.FloatField()
     desc = models.TextField()
+    
+    def __str__(self):
+        return self.user.username
+    
 
 class Organization(models.Model):
     recipient = models.OneToOneField(Recipient, on_delete=models.CASCADE)

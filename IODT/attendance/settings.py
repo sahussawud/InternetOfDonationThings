@@ -141,6 +141,7 @@ AUTH_USER_MODEL = 'register.user'
 
 LOGIN_URL = '/login/'
 
+
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'

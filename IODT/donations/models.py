@@ -54,7 +54,7 @@ class Project(models.Model):
     recipient = models.ForeignKey(Recipient,on_delete=models.SET_NULL, null=True)
     album = models.OneToOneField(Album, on_delete=models.CASCADE, null=True)
 
-
+    # def amount_donation(self):
 
 class Picture(models.Model):
     name = models.CharField(max_length=30, blank=True)
@@ -91,7 +91,7 @@ class Donation(models.Model):
     desc = models.TextField()
     condition = models.CharField(max_length=1, choices=CONDITION)
     quantity = models.IntegerField(default=1)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now=True)
     donor = models.ForeignKey(Doner, on_delete=models.CASCADE, default=0)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)

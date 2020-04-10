@@ -17,10 +17,13 @@ from register.models import Doner, Recipient
 def project_select(request, donation_id):
     contexts={}
     donation = Donation.objects.get(pk=donation_id)
+    donation_picture = Picture.objects.filter(album=donation.album)
     # Retrieve only project that the same requiretype
-    project = Project.objects.filter(requiretype=donation.dtype)
+    project = Project.objects.filter(requiretype__id=donation.dtype.id)
     print(project)
     contexts['donation'] = donation
+    contexts['donation_picture'] = donation_picture[0]
+    contexts['projects'] = project
     return render(request, 'donations/project_select.html', context=contexts) 
 
 @login_required
@@ -102,6 +105,8 @@ def create_project(request):
             new_form.album = album
             new_form.status = Project.STATUS[0][0]
             new_form.save()
+            # save RequireType to m2m has to save after create an instance
+            form.save_m2m()
             contexts['success'] = 'บันทึกสำเร็จ'
         else:
             contexts['danger'] = 'บันทึกไม่สำเร็จ'

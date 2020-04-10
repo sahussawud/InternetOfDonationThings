@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from register.views import my_login, my_profile
 from django.conf import settings
+
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
