@@ -32,8 +32,8 @@
                     <td>{{project.get_status_display}}</td>
                     <td>{{project.expire_date}}</td>
                     <td>
-                        <a href="">
-                            <div class="btn btn-success" id="">ดูสรุปยอด</div>
+                        <a href="{% url 'project_view' project_id=project.id %}">
+                            <div class="btn btn-success" id="">รายละเอียด</div>
                         </a>
                     </td>
                 </tr>
