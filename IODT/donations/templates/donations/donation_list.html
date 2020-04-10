@@ -50,7 +50,7 @@
                     {% if donation.project %}
                     <td>{{donation.project.name}}</td>
                     <td>
-                        <a href="">
+                        <a href="{%url 'project_view' project_id=donation.project.id %}">
                             <div class="btn btn-success" id="">ดูโครงการ</div>
                         </a>
                     </td>
