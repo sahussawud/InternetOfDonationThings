@@ -164,8 +164,8 @@
 
     var check_form = '';
     function change_form(event) {
-        console.log(event.explicitOriginalTarget.value);
-        var form_name = event.explicitOriginalTarget.value;
+        console.log(event.target.value);
+        var form_name = event.target.value;
         if (form_name === "donor") {
             document.getElementById('recipient_form_select').style.display = 'none';
             document.getElementById('donor_form').style.display = 'block';

@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.deletion import SET_NULL
 from django.db.models.fields import DateTimeField
 from django.db.models.fields.related import ForeignKey
+# from django.contrib.gis.db import models
 
 from datetime import datetime 
 from register.models import Doner, Recipient

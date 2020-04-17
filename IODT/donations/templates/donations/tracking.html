@@ -1,0 +1,10 @@
+{% extends "base2.html" %}
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+    <div class="row mb-2">
+        <input type="text" name="test" class="form-control" autofocus="" id="test">
+    </div>
+    <button type="submit" class='btn btn-success'>Tracking</button>
+</form>
+{% endblock content %}

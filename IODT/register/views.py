@@ -135,10 +135,13 @@ def register2(request):
 
 @login_required
 def my_profile(request):
-    context = {}
     user = request.user
     donor = Doner.objects.filter(user_id=user.id)
     recipient = Recipient.objects.filter(user_id=user.id)
+    context = {
+        'username': user.username,
+        'profile_pic': user.profile_pic
+    }
     if donor:
         donor = donor[0]
         context = {

@@ -117,3 +117,7 @@ def create_project(request):
 
     contexts['form'] = form
     return render(request, 'donations/register_project.html', context=contexts)
+
+def tracking(request):
+    contexts={}
+    return render(request, 'donations/tracking.html', context=contexts) 
