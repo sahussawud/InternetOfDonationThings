@@ -100,7 +100,10 @@ class Donation(models.Model):
 
 class Qrcode(models.Model):
     donation = models.OneToOneField(Donation, on_delete=models.CASCADE, null=True)
-    value = models.CharField(max_length=255)
+    use_flag = models.BooleanField(default=False)
+    value = models.CharField(max_length=32, unique=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    update_date = models.DateTimeField(auto_now=True)
 
 class SendDetail(models.Model):
     METHOD = (

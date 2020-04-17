@@ -1,4 +1,6 @@
 
+import base64
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -7,9 +9,11 @@ from django.forms.models import modelform_factory
 from django.shortcuts import redirect, render
 from django.template.context_processors import request
 
+import pyqrcode
 from donations.forms import CreateProjectForm, DonationForm
 from donations.models import Album, Donation, Picture, Project
 from register.models import Doner, Recipient
+
 
 
 # Create your views here.
@@ -118,6 +122,35 @@ def create_project(request):
     contexts['form'] = form
     return render(request, 'donations/register_project.html', context=contexts)
 
+from django.core.exceptions import ObjectDoesNotExist
+from io import BytesIO
+import random
+from .models import Qrcode
+
 def tracking(request):
     contexts={}
+    #generate MD5 hash id
+    qrcode_id = ''
+    while True:
+        hash = random.getrandbits(128)
+        qrcode_id = "hash value: %032x" % hash
+        try:
+            qrcode = Qrcode.objects.get(value=qrcode_id)
+            print('Random New Hash')
+        except ObjectDoesNotExist:
+            print('Random New Hash is %s' % qrcode_id)
+            break
+
+    
+    #create qrcode
+    number = pyqrcode.create(qrcode_id)
+    s = BytesIO()
+    number.png(s,scale=32)
+    #encode to Base64 image
+    encoded = base64.b64encode(s.getvalue()).decode("ascii")
+    contexts['qrcode'] = {
+        'hash': qrcode_id,
+        'encoded' : encoded
+    }
+    
     return render(request, 'donations/tracking.html', context=contexts) 

@@ -1,10 +1,12 @@
 {% extends "base2.html" %}
 {% block content %}
-<form method="POST">
+    <h2>{{ qrcode.hash }}</h2>
+    <img style='width: 40%;' src="data:image/png;base64,{{ qrcode.encoded }}" alt="Red dot" />
+<!-- <form method="POST">
 {% csrf_token %}
     <div class="row mb-2">
         <input type="text" name="test" class="form-control" autofocus="" id="test">
     </div>
     <button type="submit" class='btn btn-success'>Tracking</button>
-</form>
+</form> -->
 {% endblock content %}
