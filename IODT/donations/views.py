@@ -1,11 +1,16 @@
 
 import base64
+import json
+import random
+from io import BytesIO
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.forms import FileInput, modelformset_factory
 from django.forms.models import modelform_factory
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template.context_processors import request
 
@@ -14,6 +19,7 @@ from donations.forms import CreateProjectForm, DonationForm
 from donations.models import Album, Donation, Picture, Project
 from register.models import Doner, Recipient
 
+from .models import Qrcode
 
 
 # Create your views here.
@@ -122,18 +128,31 @@ def create_project(request):
     contexts['form'] = form
     return render(request, 'donations/register_project.html', context=contexts)
 
-from django.core.exceptions import ObjectDoesNotExist
-from io import BytesIO
-import random
-from .models import Qrcode
 
-def tracking(request):
+@login_required
+def tracking(request, donation_id):
     contexts={}
+    #retrieve object donation
+    donation = Donation.objects.get(pk=donation_id)
+    pictures = Picture.objects.filter(album=donation.album)
+
+    #check that doantion has register with qrcode yet?
+    try:
+        qrcode = Qrcode.objects.get(donation=donation)
+    except ObjectDoesNotExist:
+        qrcode = None
+        print('Binding QrCode Not found')
+
+    contexts['information'] = {
+        'pictures' : pictures,
+        'data' : donation,
+        'qrcode': qrcode
+    }
     #generate MD5 hash id
     qrcode_id = ''
     while True:
         hash = random.getrandbits(128)
-        qrcode_id = "hash value: %032x" % hash
+        qrcode_id = "%032x" % hash
         try:
             qrcode = Qrcode.objects.get(value=qrcode_id)
             print('Random New Hash')
@@ -154,3 +173,23 @@ def tracking(request):
     }
     
     return render(request, 'donations/tracking.html', context=contexts) 
+
+def qrcode_binding(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        donation = Donation.objects.get(pk=int(data['donation']))
+        qrcode = Qrcode.objects.create(
+            donation = donation,
+            use_flag = True,
+            value = data['hash']
+        )
+        return HttpResponse(status=201)
+    return HttpResponse(status=405)
+
+def qrcode_delete(request, qrcode_id):
+    if request.method == 'DELETE':
+        qrcode = Qrcode.objects.get(pk=qrcode_id)
+        qrcode.delete()
+        return HttpResponse(status=200)
+    return HttpResponse(status=405)
+        

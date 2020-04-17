@@ -34,6 +34,7 @@
                     <th scope="col">สถานะ</th>
                     <th scope="col">ให้โครงการ</th>
                     <th scope="col">รูปภาพ</th>
+                    <th></th>
 
                 </tr>
             </thead>
@@ -58,10 +59,15 @@
                     <td><i class="material-icons" style="font-size:30px;color:red">cancel</i></td>
                     <td>
                         <a href="{% url 'project_select' donation.id %}">
-                            <div class="btn btn-success" id="">บริจาคตอนนี้</div>
+                            <div class="btn btn-danger" id="">บริจาคเลย</div>
                         </a>
                     </td>
                     {% endif %}
+                    <td>
+                        <a href="{% url 'tracking' donation.id %}">
+                            <div class="btn btn-warning" id="">ติดตาม</div>
+                        </a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

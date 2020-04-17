@@ -98,12 +98,25 @@ class Donation(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
     album = models.OneToOneField(Album, on_delete=models.CASCADE, null=True)
 
+from io import BytesIO
+import base64
+import pyqrcode
+
 class Qrcode(models.Model):
     donation = models.OneToOneField(Donation, on_delete=models.CASCADE, null=True)
     use_flag = models.BooleanField(default=False)
     value = models.CharField(max_length=32, unique=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
+
+    def get_Base64_hash(self):
+        number = pyqrcode.create(self.value)
+        s = BytesIO()
+        number.png(s,scale=32)
+        #encode to Base64 image
+        encoded = base64.b64encode(s.getvalue()).decode("ascii")
+        return encoded
+
 
 class SendDetail(models.Model):
     METHOD = (
