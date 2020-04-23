@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from register.views import my_login, my_profile
+from register.views import my_login, my_profile, tracking_test
 from django.conf import settings
 
 from django.contrib.staticfiles.urls import static
@@ -29,6 +29,7 @@ urlpatterns = [
     path('donations/', include('donations.urls')),
     path('login/', my_login, name='login'),
     path('profile/', my_profile, name='profile'),
+    path('tracking_test/', tracking_test, name='tracking_test')
 ]
 
 urlpatterns += staticfiles_urlpatterns()

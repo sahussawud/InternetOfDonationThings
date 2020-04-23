@@ -192,3 +192,7 @@ def my_profile(request):
             }
 
     return render(request, 'register/profile.html', context)
+
+def tracking_test(request):
+    context = {}
+    return render(request, 'tracking_test.html', context)

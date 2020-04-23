@@ -14,7 +14,11 @@ def search(request):
     return HttpResponse('Attendance Search Page.')
 
 def index(request):
-    return render(request, 'report/index.html',{})
+    context = {}
+    user = request.user
+    if user.is_authenticated:
+        context[user] = request.user
+    return render(request, 'report/index_2.html',{})
 
 def project_view(request, project_id):
     contexts = {}
