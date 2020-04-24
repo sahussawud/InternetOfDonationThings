@@ -52,7 +52,7 @@
             <div class="row" v-if='qrcode'>
                 <h2>นี้คือ Qrcode ของคุณ </h2>
                 <p>hash id : {{ information.qrcode.value }}</p>
-                <img style='width: 100%;' src="data:image/png;base64,{{ information.link_qrcode }}" alt="myqrcode_pic" /><br>
+                <img style='width: 100%;' src="data:image/png;base64,{{ information.qrcode.get_Base64_hash }}" alt="myqrcode_pic" /><br>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-success" v-on:click='print(event)'>พิมพ์</button>
                     <button type="button" class="btn btn-danger" v-on:click='qrcode_delete()'>เลิกผูก qrcode</button>
@@ -74,7 +74,7 @@
                 <h2>สร้าง QRCode</h2>
                 <p>หลังจากสร้าง qrcode หลังจากสร้าง qrcode ด้วยตนเองให้ผู้ใช้นำภาพ qrcode
                     ที่ได้นั้นเเปะลงบนสิ่งของที่ต้องการติดตาม</p>
-                <img style='width: 100%;' src="data:image/png;base64,{{ qrcode.encoded }}" alt="Red dot" /><br>
+                <img style='width: 100%;' src="data:image/png;base64,{{ qrcode }}" alt="Red dot" /><br>
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-success" v-on:click='bindqrcode()'>ผูกตอนนี้</button>
                     <button type="button" class="btn btn-warning">เปลี่ยน</button>
@@ -125,8 +125,8 @@
                         .then(function (response) {
                             console.log(response);
                             console.log('delete success')
-                            app.qrcode = null
-                            app.qrcode_id = null
+                            app.qrcode = ""
+                            app.qrcode_id = ""
                             
                         })
                         .catch(function (error) {

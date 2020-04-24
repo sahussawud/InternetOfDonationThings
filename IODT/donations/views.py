@@ -4,6 +4,8 @@ import json
 import random
 from io import BytesIO
 
+from django.urls import reverse
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -135,42 +137,50 @@ def tracking(request, donation_id):
     #retrieve object donation
     donation = Donation.objects.get(pk=donation_id)
     pictures = Picture.objects.filter(album=donation.album)
-
+    encoded = None
     #check that doantion has register with qrcode yet?
     try:
         qrcode = Qrcode.objects.get(donation=donation)
+        number = pyqrcode.create(request.build_absolute_uri(reverse('feedback_by_qrcode', kwargs={'hash_id':qrcode.value})))
+        s = BytesIO()
+        number.png(s,scale=60)
+        #encode to Base64 image
+        encoded = base64.b64encode(s.getvalue()).decode("ascii")
+        
     except ObjectDoesNotExist:
         qrcode = None
         print('Binding QrCode Not found')
+        #generate MD5 hash id
+        qrcode_id = ''
+        while True:
+            hash = random.getrandbits(128)
+            qrcode_id = "%032x" % hash
+            try:
+                qrcode = Qrcode.objects.get(value=qrcode_id)
+                print('Random New Hash')
+            except ObjectDoesNotExist:
+                print('Random New Hash is %s' % qrcode_id)
+                break
+
+        
+        #create qrcode
+        number = pyqrcode.create(request.build_absolute_uri(reverse('feedback_by_qrcode', kwargs={'hash_id':qrcode_id})))
+        s = BytesIO()
+        number.png(s,scale=100)
+        #encode to Base64 image
+        encoded = base64.b64encode(s.getvalue()).decode("ascii")
+        contexts['qrcode'] = {
+            'hash': qrcode_id,
+            'encoded' : encoded,
+        }
 
     contexts['information'] = {
         'pictures' : pictures,
         'data' : donation,
-        'qrcode': qrcode
+        'qrcode': qrcode,
+        'link_qrcode': encoded
     }
-    #generate MD5 hash id
-    qrcode_id = ''
-    while True:
-        hash = random.getrandbits(128)
-        qrcode_id = "%032x" % hash
-        try:
-            qrcode = Qrcode.objects.get(value=qrcode_id)
-            print('Random New Hash')
-        except ObjectDoesNotExist:
-            print('Random New Hash is %s' % qrcode_id)
-            break
 
-    
-    #create qrcode
-    number = pyqrcode.create(qrcode_id)
-    s = BytesIO()
-    number.png(s,scale=32)
-    #encode to Base64 image
-    encoded = base64.b64encode(s.getvalue()).decode("ascii")
-    contexts['qrcode'] = {
-        'hash': qrcode_id,
-        'encoded' : encoded
-    }
     
     return render(request, 'donations/tracking.html', context=contexts) 
 
@@ -191,5 +201,8 @@ def qrcode_delete(request, qrcode_id):
         qrcode = Qrcode.objects.get(pk=qrcode_id)
         qrcode.delete()
         return HttpResponse(status=200)
+        return redirect('tracking')
     return HttpResponse(status=405)
-        
+
+def feedback_by_qrcode(request, hash_id):
+    return render(request, 'donations/feedback_by_qrcode.html')
