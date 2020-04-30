@@ -10,5 +10,6 @@ urlpatterns = [
     path('project/my/', views.project_list, name='project_list'),
     path('tracking/<int:donation_id>', views.tracking, name='tracking'),
     path('api/qrbinding/', views.qrcode_binding, name='qrbinding'),
-    path('api/qrcode_delete/<int:qrcode_id>', views.qrcode_delete, name='qrcode_delete')
+    path('api/qrcode_delete/<int:qrcode_id>', views.qrcode_delete, name='qrcode_delete'),
+    path('feedback/<str:hash_id>/', views.feedback_by_qrcode, name='feedback_by_qrcode')
 ]
