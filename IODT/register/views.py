@@ -10,7 +10,7 @@ from register.models import *
 def ChangePassword(request):
     context={}
     if request.method == 'POST':
-        user = request.user.username
+        username = request.user.username
         password = request.POST.get('password')
         re_password = request.POST.get('password_again')
 
