@@ -7,18 +7,19 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
+            {% include "messages.html" %}
             <div class="card mb-3 ">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        {% for pic in information.pictures %}
+                        {% for picture in pictures %}
                         {% if forloop.first %}
                         <div class="carousel-item active">
-                            <img src="/media/{{ pic.url }}" class="d-block " alt="{{pic.name}}"
+                            <img src="/media/{{ picture.url }}" class="d-block " alt="{{picture.name}}"
                                 style="height: 480px; width: 25vw;">
                         </div>
                         {% else %}
                         <div class="carousel-item">
-                            <img src="/media/{{ pic.url }}" class="d-block " alt="{{pic.name}}"
+                            <img src="/media/{{ picture.url }}" class="d-block " alt="{{picture.name}}"
                                 style="height: 480px; width: 25vw;">
                         </div>
                         {% endif %}
@@ -35,105 +36,89 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">ชื่อของบริจาค : {{information.data.name}}</h5>
-                    <p class="card-text">desc : {{information.data.desc}}</p>
+                    <h5 class="card-title">ชื่อของบริจาค : {{donation.name}}</h5>
+                    <p class="card-text">desc : {{donation.desc}}</p>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">dtype : {{information.data.dtype.name}}</li>
-                        <li class="list-group-item">quantity : {{information.data.quantity}}</li>
-                        <li class="list-group-item">get_status_display : {{information.data.get_status_display}}</li>
-                        <li class="list-group-item">project : {{information.data.project.name}}</li>
+                        <li class="list-group-item">dtype : {{donation.dtype.name}}</li>
+                        <li class="list-group-item">quantity : {{donation.quantity}}</li>
+                        <li class="list-group-item">get_status_display : {{donation.get_status_display}}</li>
+                        <li class="list-group-item">project : {{donation.project.name}}</li>
                     </ul>
-                    <p class="card-text"><small class="text-muted">ลงทะเบียนวันที่ {{information.data.date}}</small></p>
+                    <p class="card-text"><small class="text-muted">ลงทะเบียนวันที่ {{donation.date}}</small></p>
                 </div>
             </div>
         </div>
         <!-- ส่วน QRCODE -->
-        <div class="col-4" id='app'>
-            <div class="row" v-if='qrcode'>
-                <h2>นี้คือ Qrcode ของคุณ </h2>
-                <p>hash id : {{ information.qrcode.value }}</p>
-                <img style='width: 100%;' src="data:image/png;base64,{{ information.qrcode.get_Base64_hash }}" alt="myqrcode_pic" /><br>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-success" v-on:click='print(event)'>พิมพ์</button>
-                    <button type="button" class="btn btn-danger" v-on:click='qrcode_delete()'>เลิกผูก qrcode</button>
-                </div>
-            </div>
-            <div class="container" v-else>
-            <div class="row" >
-                <h2>ของชิ้นนี้ยังไม่ได้กำหนดการติดตาม T^T</h2>
-                <p>เลือกวิธีติดตาม</p>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-success" v-on:click="form = true">สร้าง QRCODE
-                        ด้วยตนเอง</button>
-                    <button type="button" class="btn btn-info" v-on:click="form = false">ผูกกับ QRCODE
-                        ที่มีอยู่เเล้ว</button>
-                </div>
-            </div>
+        <div class="col-6" id="app">
+            <h1>ฝากอะไรไปให้ผู้บริจาค</h1>
+            <form method="post" action="{% url 'feedback_by_qrcode' hash_id %}" id="image-form"
+                enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-12">
+                        {% csrf_token %}
+                        <label for="file">ฝากรูปไปให้ผู้ให้ (ได้มากกว่า 1 ภาพ)</label>
+                        <input type="file" name="images" multiple>
+                        <br><br>
+                        {{form.as_p}}
+                    </div>
+                    <div class="col-12 mb-2">
+                        
+                            <p id="status"></p>
+                            <a id="map-link" target="_blank"></a>
+                            <input type="hidden" type='text' v-model='latitude' name="ladtitude" id='ladtitude' value="">
+                            <input type="hidden" type='text' v-model='longtitude' name="longtitude" id='longtitude' value="">
 
-            <div class='row' v-if='form'>
-                <h2>สร้าง QRCode</h2>
-                <p>หลังจากสร้าง qrcode หลังจากสร้าง qrcode ด้วยตนเองให้ผู้ใช้นำภาพ qrcode
-                    ที่ได้นั้นเเปะลงบนสิ่งของที่ต้องการติดตาม</p>
-                <img style='width: 100%;' src="data:image/png;base64,{{ qrcode }}" alt="Red dot" /><br>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-success" v-on:click='bindqrcode()'>ผูกตอนนี้</button>
-                    <button type="button" class="btn btn-warning">เปลี่ยน</button>
+                            <a class='btn btn-info' v-on:click.prevent='get_location()'>ส่งตำเเหน่งบอกว่าของบริจาคของเขาอยู่ที่นี่</a>
+                        
+                    </div>
+                    <button type="submit" class='btn btn-success'>submit</button>
                 </div>
-            </div>
-            <div class='row' v-else>
-                <h2>ลงทะเบียนจาก QRCode ที่ได้รับมา</h2>
-                <p>หลังจากผูก qrcode สำเร็จ เเปะไว้ใน บริเวณที่สังเกตได้ง่าย
-                    ที่ได้นั้นเเปะลงบนสิ่งของที่ต้องการติดตาม</p>
-            </div>
-        </div>
+            </form>
+            
         </div>
 
     </div>
     <script>
-        axios.defaults.xsrfCookieName = 'csrftoken'
-        axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN'
+
         var app = new Vue({
             el: '#app',
             data: {
-                form: true,
-                hash: '{{ qrcode.hash }}',
-                donation: '{{ information.data.id }}',
-                qrcode:'{{ information.qrcode.value }}',
-                qrcode_id: '{{ information.qrcode.id }}'
+                latitude: '',
+                longtitude: '',
+
             },
             methods: {
-                bindqrcode: function () {
-                    axios.post('/donations/api/qrbinding/', {
-                        'hash': this.hash,
-                        'donation': this.donation
-                    })
-                        .then(function (response) {
-                            console.log(response);
-                            app.qrcode = app.hash
-                            
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                get_location: function () {
+                    let self = this
+                    const status = document.querySelector('#status');
+                    const mapLink = document.querySelector('#map-link');
+
+                    mapLink.href = '';
+                    mapLink.textContent = '';
+
+                    function success(position) {
+                        self.latitude = position.coords.latitude;
+                        self.longtitude = position.coords.longitude;
+
+                        status.textContent = '';
+                        mapLink.href = `https://www.openstreetmap.org/#map=18/${self.latitude}/${self.longtitude}`;
+                        mapLink.textContent = `พิกัดของผู้บริจาคปัจจุบัน : Latitude: ${self.latitude} °, Longitude: ${self.longtitude} °`;
+
+                    }
+
+                    function error() {
+                        status.textContent = 'Unable to retrieve your location';
+                    }
+
+                    if (!navigator.geolocation) {
+                        status.textContent = 'Geolocation is not supported by your browser';
+                    } else {
+                        status.textContent = 'Locating…';
+                        navigator.geolocation.getCurrentPosition(success, error);
+                    }
 
                 },
-                print_qrcode: function (event){
-                    print(event.currentTarget.previousElementChild)
-                },
-                qrcode_delete: function () {
-                    axios.delete('/donations/api/qrcode_delete/'+this.qrcode_id)
-                        .then(function (response) {
-                            console.log(response);
-                            console.log('delete success')
-                            app.qrcode = ""
-                            app.qrcode_id = ""
-                            
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
 
-                },
             }
         })
     </script>

@@ -2,11 +2,12 @@
 import base64
 import json
 import random
+from builtins import object
 from io import BytesIO
 
-from django.urls import reverse
-
+import qrcode
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,10 +16,11 @@ from django.forms.models import modelform_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template.context_processors import request
+from django.urls import reverse
 
 import pyqrcode
-from donations.forms import CreateProjectForm, DonationForm
-from donations.models import Album, Donation, Picture, Project
+from donations.forms import CreateProjectForm, DonationForm, FeedbackForm
+from donations.models import Album, Donation, Location, Picture, Project, Feedback
 from register.models import Doner, Recipient
 
 from .models import Qrcode
@@ -137,6 +139,14 @@ def tracking(request, donation_id):
     #retrieve object donation
     donation = Donation.objects.get(pk=donation_id)
     pictures = Picture.objects.filter(album=donation.album)
+    feedback = Feedback.objects.filter(donation=donation_id)
+    feedback_w_photo = []
+    for item in feedback:
+        print(item)
+        photos =  Picture.objects.filter(album=item.album)
+        f_w_p = {'photos':photos, 'contents':item}
+        feedback_w_photo.append(f_w_p)
+    contexts['feedback'] = feedback_w_photo
     encoded = None
     #check that doantion has register with qrcode yet?
     try:
@@ -205,4 +215,53 @@ def qrcode_delete(request, qrcode_id):
     return HttpResponse(status=405)
 
 def feedback_by_qrcode(request, hash_id):
-    return render(request, 'donations/feedback_by_qrcode.html')
+    contexts = {}
+    try:
+        qrcode = Qrcode.objects.get(value=hash_id)
+        pic = Picture.objects.filter(album=qrcode.donation.album)
+        contexts['donation'] = qrcode.donation
+        contexts['pictures'] = pic
+        if request.method == 'POST':
+            form = FeedbackForm(request.POST)
+            Name = request.POST.get('header')[:3]
+            ladtitude = request.POST.get('ladtitude')
+            longtitude = request.POST.get('longtitude')
+            print("ladtitude longtitude ",ladtitude, longtitude)
+            if form.is_valid():
+                newform = form.save(commit=False)
+                if request.FILES.getlist('images'):
+                    print(request.FILES.getlist('images'))
+                    album = Album(name='Album of ' + Name)
+                    album.save()
+                    for file in request.FILES.getlist('images'):
+                        pic = Picture(
+                                name=Name,
+                                url=file,
+                                album=album
+                        )
+                        pic.save()    
+                    newform.album = album
+                if ladtitude and longtitude:
+                    location = Location.objects.create(name=Name,
+                                                        _type='feedback',
+                                                        ladtitude=ladtitude,
+                                                        longtitude=longtitude)
+                    newform.location = location
+                    print(location)
+
+                newform.donation = qrcode.donation
+                newform.save()
+                messages.success(request, 'สง่ข้อความสำเร็จ.')
+            else:
+                form = FeedbackForm(request.POST)
+                messages.error(request, 'กรุณากรอกข้อความใหม่.')
+        else:
+            form = FeedbackForm()
+
+    except Qrcode.DoesNotExist:
+        messages.error(request, 'QR not found.')
+        form = FeedbackForm()
+
+    contexts['hash_id'] = hash_id
+    contexts['form'] = form
+    return render(request, 'donations/feedback_by_qrcode.html',context=contexts)

@@ -1,12 +1,15 @@
+from datetime import datetime
+
+from django import forms
 from django.forms import ImageField, ModelForm, Textarea
 from django.forms.models import ModelForm
+from django.forms.widgets import DateInput, NumberInput, TextInput, Select
 from django.utils.translation import gettext_lazy as _
-from django import forms
 
-  
-from datetime import datetime
 from donations.models import *
+from donations.models import Feedback
 from donations.widgets import AdvancedFileInput
+
 
 def validate_past_date(value):
     if value < datetime.now().date():
@@ -27,15 +30,19 @@ class DonationForm(ModelForm):
             'quantity': _('จำนวน'),
         }
         widgets = {
-            'desc': Textarea(attrs={'cols': 40, 'rows': 5 }),
+            'name': TextInput(attrs={'class':'form-control'}),
+            'dtype': Select(attrs={'class':'form-control'}),
+            'condition': NumberInput(attrs={'class':'form-control'}),
+            'quantity': NumberInput(attrs={'class':'form-control'}),
+            'desc': Textarea(attrs={'cols': 40, 'rows': 5 ,'class':'form-control'}),
         }
 
 class CreateProjectForm(ModelForm):
-    expire_date = forms.DateField(
+    expire_date = forms.DateField(label='วันสิ้นสุดการรับ', widget=forms.DateTimeInput(attrs={'class':'form-control', 'type':'date'}),
         validators=[validate_past_date]
     )
-    requiretype = forms.ModelMultipleChoiceField(
-                       widget = forms.CheckboxSelectMultiple,
+    requiretype = forms.ModelMultipleChoiceField(label='สิ่งที่เปิดรับ',
+                       widget = forms.CheckboxSelectMultiple(attrs={'class':'form-check-control'}),
                        queryset = RequireType.objects.all()
                )
 
@@ -49,8 +56,24 @@ class CreateProjectForm(ModelForm):
             'propose': _('จุดประสงค์โครงการ'),
             'helping_people': _('จำนวนคนที่จะได้รับการช่วยเหลือ'),
             'address': _('ที่อยู่ของผู้จะได้รับบริจาค'),
-            'expire_date': _('วันสิ้นสุดการรับการบริจาค')
         }
         widgets = {
-            'desc': Textarea(attrs={'cols': 40, 'rows': 5  }),
+            'name': TextInput(attrs={'class':'form-control'}),
+            'propose': TextInput(attrs={'class':'form-control'}),
+            'helping_people': NumberInput(attrs={'class':'form-control'}),
+            'address': Textarea(attrs={'cols': 40, 'rows': 5 , 'class':'form-control'}),
+            'desc': Textarea(attrs={'cols': 40, 'rows': 5 , 'class':'form-control'}),
+        }
+
+class FeedbackForm(ModelForm):
+    class Meta:
+        model = Feedback
+        exclude = ['album', 'sender', 'sent_date', 'donation', 'location']
+        labels = {
+            'header': _('หัวเรื่อง'),
+            'detail': _('เนื้อความ')
+        }
+        widgets = {
+            'header': TextInput(attrs={'class':'form-control'}),
+            'detail': Textarea(attrs={'cols': 40, 'rows': 5 ,'class':'form-control'}),
         }

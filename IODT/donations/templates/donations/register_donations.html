@@ -22,30 +22,16 @@
         {% endif %}
     </div>
     <div class="row">
-        <div class="col">
+        
 
-            <form method="post" action="{% url 'register_donations' %}" id="image-form" enctype="multipart/form-data">
-                <!-- {{ formset.management_form }}
-                {% for form in formset %}
-                    {% for field in form %}
-                        {{ field.label_tag }} {{ field }}
-                         <br>
-                         
-                    {% endfor %}
-                {% endfor %} -->
-                <!-- <input type="file" name="img[]" class="file" accept="image/*"> -->
-                <!-- <input type="text" class="form-control" disabled placeholder="Upload File" id="file">-->
-                
-                <!-- <button type="button" class="btn btn-primary browse" style="width: 370px;" name="picture">choose
-                    image</button> -->
+        <div class="col">
+            <h1>ลงทะเบียนสิ่งของบริจาค</h1>
+            <hr>
+        <form method="post" action="{% url 'register_donations' %}" id="image-form" enctype="multipart/form-data">
+               
                     <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
                     <input type="file" name="images" multiple>
                     <br><br>
-
-            <!-- </form> -->
-        </div>
-
-        <div class="col">
 
             <h5 class="card-title font-weight-bold">ลงทะเบียนสิ่งของบริจาค</h5>
 

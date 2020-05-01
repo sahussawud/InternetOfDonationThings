@@ -20,10 +20,13 @@ class Location(models.Model):
         ('shipping', 'การขนส่ง'),
         ('update', 'การอัปเดต')
     )
-    name = models.CharField(max_length=40)
-    _type = models.CharField(max_length=10,choices=TYPES)
+    name = models.CharField(max_length=40, blank=True)
+    _type = models.CharField(max_length=10,choices=TYPES, default='update')
     ladtitude = models.CharField(max_length=50)
     longtitude = models.CharField(max_length=50)
+    def __str__(self):
+        return 'ladtitude : '+self.ladtitude+' longtitude : '+ self.longtitude
+    
 class RequireType(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=255)
@@ -143,4 +146,5 @@ class Feedback(models.Model):
     detail = models.TextField()
     sent_date = models.DateTimeField(auto_now_add=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=0)
+    donation = models.ForeignKey(Donation, on_delete=models.CASCADE, default=0)
+    album = models.OneToOneField(Album, on_delete=models.SET_NULL, null=True)
