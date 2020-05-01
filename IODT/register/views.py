@@ -17,7 +17,7 @@ def ChangePassword(request):
         if password != re_password:
             context['error'] = 'Password do not match'
         else:
-            u = User.objects.get(username=user)
+            u = user.objects.get(username=username)
             u.set_password(password)
             u.save()
             context['success'] = 'Change Password Successfully'
