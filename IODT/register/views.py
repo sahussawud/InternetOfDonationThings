@@ -10,14 +10,14 @@ from register.models import *
 def ChangePassword(request):
     context={}
     if request.method == 'POST':
-        user = request.user.username
+        username = request.user.username
         password = request.POST.get('password')
         re_password = request.POST.get('password_again')
 
         if password != re_password:
             context['error'] = 'Password do not match'
         else:
-            u = User.objects.get(username=user)
+            u = user.objects.get(username=username)
             u.set_password(password)
             u.save()
             context['success'] = 'Change Password Successfully'
