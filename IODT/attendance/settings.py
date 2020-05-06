@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'attendance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'iodt2',
+        'NAME': 'iodt',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost',
