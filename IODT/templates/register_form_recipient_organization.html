@@ -1,0 +1,63 @@
+<form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    <!-- Modal RECIPIENT ORGANIZATION -->
+    <div id="recipient_organization_form" class="modal fade">
+        <div class="modal-dialog modal-login">
+          <div class="modal-content" style="width:500px;">
+            <div class="modal-header">
+              <h4 class="modal-title">Registor Recipient Organization or Foundation</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form action="/examples/actions/confirmation.php" method="post">
+  
+                <div class="form-group">
+                  <i class="fa fa-user"></i>
+                  <input type="text" class="form-control" placeholder="Username" required="required">
+                </div>
+                <div class="form-group">
+                  <i class="fa fa-lock"></i>
+                  <input type="password" class="form-control" placeholder="Password" required="required">
+                </div>
+                <div class="form-group">
+                  <i class="fa fa-lock"></i>
+                  <input type="password" class="form-control" placeholder="Confirm password" required="required">
+                </div>
+                <div class="form-group">
+                  <i class="fa fa-at"></i>
+                  <input type="email" class="form-control" placeholder="Email" required="required">
+                </div>
+                <div class="form-group">
+                  <i class="fa fa-phone"></i>
+                  <input type="phone" class="form-control" placeholder="Phone number" required="required">
+                </div>
+            
+                <div class="form-group">
+                  <i class="fa fa-map-marked-alt"></i>
+                  <input type="text" class="form-control" id="inputAddress2" placeholder="Address">
+                </div>
+                <div class="form-group">
+                  <i class="fa fa-building"></i>
+                  <input type="text" class="form-control" placeholder="Organization Name">
+                </div>
+                <div class="form-group">
+                  <i class="fa fa-calendar-plus"></i>
+                  <input type="date" class="form-control" value="2011-08-19" >
+                </div>
+               
+                <div class="form-group">
+                  <i class="fa fa-user-tag"></i>
+                  <textarea type="text" class="form-control" id="inputAddress2" placeholder="About you"
+                    rows="3"></textarea>
+                </div>
+  
+                <div class="form-group">
+                  <input type="submit" class="btn btn-primary btn-block btn-lg" value="Sign up">
+                </div>
+              </form>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+</form>
