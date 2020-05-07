@@ -285,14 +285,21 @@ def test_map (request):
         return HttpResponse(status=200)
 
 class feedback_api(APIView):
-    """ API ดึง feedback ทั้งหมดของ donation นั้น"""
+    """ API ดึง feedback ทั้งหมดของ donation นั้น
+        ส่ง donor id ทาง params มา รหัสผู้บริจาค"""
     def get(self, request, donation_id):
         donation = Donation.objects.get(id=donation_id)
-        feeddback = Feedback.objects.all()
+        feeddback = Feedback.objects.filter(donation=donation)
         serializer = FeedbackSerializer(feeddback, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class projects_api(APIView):
-    '''API project ทั้งหมด ในเว็บไซต์'''
+# class last_location_of_donation(APIView):
+#     """ API ดึง location ล่าสุดของของบริจาคทั้งหมด """
+#     def get(self, request):
+#         if request.GET.get('donor_id'):
+#             donor = Doner.objects.get(id=request.GET.get('donor_id'))
+#             donation = Donation.objects.filter(donor=donor)
+#             feedback = Feedback.objects.filter(donation=donation)
+#             serializer = FeedbackSerializer(feedback, many=True)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
 
-    
