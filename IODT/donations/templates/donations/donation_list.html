@@ -2,6 +2,58 @@
 
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" />
+<style>
+    .card-custom {
+  overflow: hidden;
+  min-height: 450px;
+  box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+}
+
+.card-custom-img {
+  height: 200px;
+  min-height: 200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-color: inherit;
+}
+
+/* First border-left-width setting is a fallback */
+.card-custom-img::after {
+  position: absolute;
+  content: '';
+  top: 161px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-top-width: 40px;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: inherit;
+}
+
+.card-custom-gift img{
+    position: absolute;
+    top: 161px;
+    left: 3.46rem;
+    width: 19px;
+    height: 24px;
+}
+.card-custom-user img{
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(10, 10, 10, 0.3);
+    position: absolute;
+    top: 136px;
+    left: 1.25rem;
+    width: 50px;
+    height: 50px;
+}
+</style>
 <div class="container">
     <div class="row">
         <div class="col-10">
@@ -15,63 +67,89 @@
         </div>
     </div>
     <div class="row">
-        <h2>การบริจาคของฉัน</h2>
+        <h2>My donation</h2>
 
     </div>
+    <br>
     <div class="row">
 
-        <table class="table">
-            <thead>
-                <tr>
+        {% for donation in mydonation %}
+      <div class="col-md-6 col-lg-4 pb-3">
 
-                    <th scope="col">ลำดับ</th>
-                    <th scope="col">วันที่ลงทะเบียน</th>
-                    <th scope="col">ชื่อ</th>
-                    <th scope="col">ประเภท</th>
-                    <th scope="col">สภาพ</th>
-                    <th scope="col">จำนวน</th>
+        <!-- Copy the content below until next comment -->
+        <div class="card card-custom bg-white border-white border-0">
+        
+    
+            
+            <div id="carouselExampleControls{{forloop.counter}}" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item card-custom-img active">
+                    <img src="https://scontent-lga3-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.135.1080.1080a/s640x640/81791028_2520944424897046_9090340958711915151_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&_nc_cat=110&_nc_ohc=BhkYR-MYEMYAX-ZUSRJ&oh=0c91b4ee756141a7196b6bf9c6321928&oe=5EBED2FE" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item card-custom-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQPO0RBhhLs-lZWmJRt-hxU1Ziqu68c9o_P2rc6FGS_DLR2nXZP&usqp=CAU" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item card-custom-img">
+                    <img src="https://cdn.fs.grailed.com/api/file/P8zmsSvNS0azotdG0aV4" class="d-block w-100" alt="...">
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls{{forloop.counter}}" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls{{forloop.counter}}" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
 
-                    <th scope="col">สถานะ</th>
-                    <th scope="col">ให้โครงการ</th>
-                    <th scope="col">รูปภาพ</th>
-                    <th></th>
 
-                </tr>
-            </thead>
-            <tbody>
-                {% for donation in mydonation %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{donation.date}}</td>
-                    <td>{{donation.name}}</td>
-                    <td>{{donation.dtype.name}}</td>
-                    <td>{{donation.get_condition_display}}</td>
-                    <td>{{donation.quantity}}</td>
-                    <td>{{donation.get_status_display}}</td>
-                    {% if donation.project %}
-                    <td>{{donation.project.name}}</td>
-                    <td>
-                        <a href="{%url 'project_view' project_id=donation.project.id %}">
-                            <div class="btn btn-success" id="">ดูโครงการ</div>
-                        </a>
-                    </td>
-                    {% else %}
-                    <td><i class="material-icons" style="font-size:30px;color:red">cancel</i></td>
-                    <td>
-                        <a href="{% url 'project_select' donation.id %}">
-                            <div class="btn btn-danger" id="">บริจาคเลย</div>
-                        </a>
-                    </td>
-                    {% endif %}
-                    <td>
-                        <a href="{% url 'tracking' donation.id %}">
-                            <div class="btn btn-warning" id="">ติดตาม</div>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
+
+
+
+
+
+              <div class="card-custom-user">
+                <img class="img-fluid" src="{{ request.META.HTTP_NAME }}/media/{{ user.profile_pic }}" alt="Avatar" />
+              </div>
+              <div class="card-custom-gift">
+                <img class="img-fluid" src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/gift-icon.png" alt="Avatar" />
+              </div>
+              
+              
+          <div class="card-body" style="overflow-y: auto">
+            <p class="h3 card-title font-weight-bold"> {{donation.name}} </p>
+            <br>
+            <br>
+            <p class="h6">
+              <a href="#" class="font-weight-bold">kensfz</a>
+              Send to 
+              <a href="#" class="font-weight-bold">{{donation.project.name}}</a>
+            </p>
+
+            <h6 class="blockquote-footer">
+                {{donation.date}}
+            </h6>
+            <p class="card-text">{{donation.desc}}</p>
+          </div>
+          <div class="card-footer" style="background: inherit; border-color: inherit;">
+            <a href="{% url 'project_select' donation.id %}" class="btn btn-success">Donation</a>
+            <a href="{% url 'tracking' donation.id %}" class="btn btn-warning">Tracking</a>
+          </div>
+        </div>
+        <!-- Copy until here -->
+
+      </div>
+      {% endfor %}
+
+
+
+
+
+
+
+
     </div>
 </div>
 
