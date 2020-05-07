@@ -94,8 +94,15 @@ def donation_list(request):
     contexts={}
     Doner_ = Doner.objects.get(user=request.user)
     mydonation = Donation.objects.filter(donor=Doner_).order_by('date','name')
+    donation_cp = []   
+    for item in mydonation:
+        print(item)
+        photos =  Picture.objects.filter(album=item.album)
+        f_w_p = {'photos':photos, 'contents':item}
+        donation_cp.append(f_w_p)
+
     contexts['doner'] = Doner_
-    contexts['mydonation'] = mydonation
+    contexts['mydonation'] = donation_cp
     return render(request, 'donations/donation_list.html', context=contexts) 
 
 @login_required
@@ -144,7 +151,7 @@ def tracking(request, donation_id):
     donation = Donation.objects.get(pk=donation_id)
     pictures = Picture.objects.filter(album=donation.album)
     feedback = Feedback.objects.filter(donation=donation_id)
-    feedback_w_photo = []
+    feedback_w_photo = []   
     for item in feedback:
         print(item)
         photos =  Picture.objects.filter(album=item.album)
@@ -273,15 +280,25 @@ def track_donations (request):
     return render(request, 'donations/track_donations.html',context=contexts)
 
 class feedback_api(APIView):
-    """ API ดึง feedback ทั้งหมดของ donation นั้น"""
+    """ API ดึง feedback ทั้งหมดของ donation นั้น
+        ส่ง donor id ทาง params มา รหัสผู้บริจาค"""
     def get(self, request, donation_id):
+        """ IF กรณีต้องการจะดูทั้งหมดจะส่ง id_donation = 0 มา """
         if donation_id != 0:
             donation = Donation.objects.get(id=donation_id)
-        feeddback = Feedback.objects.all()
+            feeddback = Feedback.objects.filter(donation=donation)
+        else:
+            feeddback = Feedback.objects.all()
         serializer = FeedbackSerializer(feeddback, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-class projects_api(APIView):
-    '''API project ทั้งหมด ในเว็บไซต์'''
+# class last_location_of_donation(APIView):
+#     """ API ดึง location ล่าสุดของของบริจาคทั้งหมด """
+#     def get(self, request):
+#         if request.GET.get('donor_id'):
+#             donor = Doner.objects.get(id=request.GET.get('donor_id'))
+#             donation = Donation.objects.filter(donor=donor)
+#             feedback = Feedback.objects.filter(donation=donation)
+#             serializer = FeedbackSerializer(feedback, many=True)
+#             return Response(serializer.data, status=status.HTTP_200_OK)
 
-    

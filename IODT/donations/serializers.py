@@ -1,5 +1,5 @@
 
-from .models import Feedback, Location, Donation, Album, Picture
+from .models import Feedback, Location, Donation, Album, Picture, Project
 from rest_framework import serializers
 
 class PictureSerializer(serializers.ModelSerializer):
@@ -28,3 +28,17 @@ class FeedbackSerializer(serializers.ModelSerializer):
         model = Feedback
         fields = ['id', 'sender', 'header', 'detail', 'sent_date', 'location', 'album']
         read_only_fields = ['id']
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'name']
+        read_only_fields = ['id']
+
+class DonationSerializer(serializers.ModelSerializer):
+    location = LocationSerializer()
+    album = AlbumSerializer(required=False)
+    project = ProjectSerializer(required=False)
+    class Meta:
+        model = Donation
+        field = ['id', 'name', 'date', 'project', 'location', 'album']
