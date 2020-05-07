@@ -31,7 +31,9 @@ class regForm(UserCreationForm):
     email = forms.EmailField(widget=
         forms.TextInput(attrs={'class':'form-control'}),
     )
-    profile_pic = forms.ImageField(required=True)
+    profile_pic = forms.ImageField(required=True, widget=
+        forms.FileInput(attrs={})
+    )
 
     class Meta:
         model = user

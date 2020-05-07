@@ -1,44 +1,64 @@
 {% extends "base3.html" %}
 {% block content %}
-
+<script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous">
+</script>
 <h2>Register Step 1</h2>
 {% comment %} <button type="button" class="btn btn-success" onclick="fill()">Fill</button> {% endcomment %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
 
-        {% if field.name in list_open_row %} {% comment %} list เปิด tag row {% endcomment %}
-            <div class="row">
+    {% if field.name in list_open_row %} {% comment %} list เปิด tag row {% endcomment %}
+    <div class="row">
         {% endif %}
 
         {% if field.name in list %} {% comment %} list ที่จะใส่จะใส่ col (แถวเดียวกัน) {% endcomment %}
-            <div class="form-group col">
-        {% else %}
+        <div class="form-group col">
+            {% else %}
             <div class="form-group">
-        {% endif %}
+                {% endif %}
 
-        {{ field.label_tag }}<br>
-        {{ field }}
+                {{ field.label_tag }}<br>
+                {{ field }}
 
-        {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-        {% endfor %}
+                {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
 
-        {% if field.name in list_close_row %} {% comment %} list ที่จะใส่จะปิด row {% endcomment %}
+                {% if field.name in list_close_row %} {% comment %} list ที่จะใส่จะปิด row {% endcomment %}
             </div>
-        {% endif %}
-
+            {% endif %}
         </div>
-    {% endfor %}
-    <button type="submit" class="btn btn-success mb-5">Next</button>
+        {% endfor %}
+        <img src="" class="m-3 d-block img-responsive" style="height: 150px;" id="img_profile">
+        <button type="submit" class="btn btn-success mb-5">Next</button>
 </form>
 
 <script>
 
-    function fill () {
+    $(document).ready(function () {
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    $('#img_profile').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#id_profile_pic").change(function () {
+            readURL(this);
+        });
+    });
+
+    function fill() {
         // document.getElementById('id_username').value = 'ongsuwannoo'
         // document.getElementById('id_password1').value = 'ABCD_123456789'
         // document.getElementById('id_password2').value = 'ABCD_123456789'
@@ -53,5 +73,5 @@
 {% endblock %}
 
 {% comment %} {% block footer %}
-    Footer of index page!!!
+Footer of index page!!!
 {% endblock %} {% endcomment %}
