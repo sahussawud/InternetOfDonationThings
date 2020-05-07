@@ -94,8 +94,15 @@ def donation_list(request):
     contexts={}
     Doner_ = Doner.objects.get(user=request.user)
     mydonation = Donation.objects.filter(donor=Doner_).order_by('date','name')
+    donation_cp = []   
+    for item in mydonation:
+        print(item)
+        photos =  Picture.objects.filter(album=item.album)
+        f_w_p = {'photos':photos, 'contents':item}
+        donation_cp.append(f_w_p)
+
     contexts['doner'] = Doner_
-    contexts['mydonation'] = mydonation
+    contexts['mydonation'] = donation_cp
     return render(request, 'donations/donation_list.html', context=contexts) 
 
 @login_required
@@ -144,7 +151,7 @@ def tracking(request, donation_id):
     donation = Donation.objects.get(pk=donation_id)
     pictures = Picture.objects.filter(album=donation.album)
     feedback = Feedback.objects.filter(donation=donation_id)
-    feedback_w_photo = []
+    feedback_w_photo = []   
     for item in feedback:
         print(item)
         photos =  Picture.objects.filter(album=item.album)
