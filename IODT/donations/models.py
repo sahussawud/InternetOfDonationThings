@@ -71,17 +71,7 @@ class Donation(models.Model):
         ('Pending','รอการยืนยัน'),
         ('Recieve','ได้รับของบริจาค')
     )
-    # TYPE = (
-    #     ('MED', 'อุปกรณ์ทางการเเพทย์'),
-    #     ('GARMENT', 'เครื่องนุ่งห่ม'),
-    #     ('CONSUMABLE', 'โภคภัณฑ์'),
-    #     ('CAPITAL','เงิน'),
-    #     ('SPORT EQUIPMENT', 'อุปกรณ์กีฬา'),
-    #     ('RECREATION','อุปกรณ์สันทนาการ'),
-    #     ('COMPUTER', 'คอมพิวเตอร์เเละอุปกรณ์'),
-    #     ('MUSIC','เครื่องดนตรี'),
-    #     ('TEACH', 'อุปกรณ์ครุภัณฑ์')
-    # )
+
     CONDITION = (
         ('1','ชำรุด'),
         ('2','ต้องซ่อม'),
@@ -111,15 +101,6 @@ class Qrcode(models.Model):
     value = models.CharField(max_length=32, unique=True)
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
-
-    # def get_Base64_hash(self, request):
-    #     number = pyqrcode.create(reverse('feedback_by_qrcode', kwargs={'hash_id':self.value}))
-    #     s = BytesIO()
-    #     number.png(s,scale=32)
-    #     #encode to Base64 image
-    #     encoded = base64.b64encode(s.getvalue()).decode("ascii")
-    #     return encoded
-
 
 class SendDetail(models.Model):
     METHOD = (

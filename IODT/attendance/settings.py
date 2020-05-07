@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'management',
     'register',
     'donations',
+    'rest_framework'
     # 'whitenoise.runserver_nostatic',
 ]
 

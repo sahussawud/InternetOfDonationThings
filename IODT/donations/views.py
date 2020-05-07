@@ -25,6 +25,10 @@ from register.models import Doner, Recipient
 
 from .models import Qrcode
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from donations.serializers import *
 
 # Create your views here.
 @login_required
@@ -279,3 +283,16 @@ def test_map (request):
     if request.method == 'DELETE':
         print('test_pass')
         return HttpResponse(status=200)
+
+class feedback_api(APIView):
+    """ API ดึง feedback ทั้งหมดของ donation นั้น"""
+    def get(self, request, donation_id):
+        donation = Donation.objects.get(id=donation_id)
+        feeddback = Feedback.objects.all()
+        serializer = FeedbackSerializer(feeddback, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class projects_api(APIView):
+    '''API project ทั้งหมด ในเว็บไซต์'''
+
+    
