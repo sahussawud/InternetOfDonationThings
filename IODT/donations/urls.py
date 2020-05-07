@@ -12,7 +12,7 @@ urlpatterns = [
     path('api/qrbinding/', views.qrcode_binding, name='qrbinding'),
     path('api/qrcode_delete/<int:qrcode_id>', views.qrcode_delete, name='qrcode_delete'),
     path('feedback/<str:hash_id>/', views.feedback_by_qrcode, name='feedback_by_qrcode'),
-    path('api/test_map/', views.test_map, name='test_map'),
+    path('track_donations/', views.track_donations, name='track_donations'),
 
     path('api/feedback/donation/<int:donation_id>/', views.feedback_api.as_view(), name='feedback_api'),
 

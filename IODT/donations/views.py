@@ -194,17 +194,6 @@ def tracking(request, donation_id):
         'qrcode': qrcode,
         'link_qrcode': encoded
     }
-
-    contexts['map'] = {
-        'id': 1,
-        'title': 'โครงการทดลอง',
-        'pic': 'https://www.csc.gov.sg/images/default-source/ethos-images/ethos-digital-issue-3/charity_754x556px.jpg',
-        'desc': 'โครงการเสื้อการกุศล " กำลังใจนักสู้ " ปัญหาความไม่สงบในสามจังหวัดชายแดนภาคใต้ตลอดหลายสิบปีที่ผ่านมาได้คร่าชีวิตประชาชนและเจ้าหน้าที่ผู้ปฏิบัติงาน',
-        'project': '/project/1/',
-        'location':{'lat':'7.33759', 'lng':'100.47862'},
-        'type': 'เด็กสาว',
-        'icon': 'IconGirl',
-    }
     return render(request, 'donations/tracking.html', context=contexts) 
 
 def qrcode_binding(request):
@@ -279,15 +268,15 @@ def feedback_by_qrcode(request, hash_id):
     contexts['form'] = form
     return render(request, 'donations/feedback_by_qrcode.html',context=contexts)
 
-def test_map (request):
-    if request.method == 'DELETE':
-        print('test_pass')
-        return HttpResponse(status=200)
+def track_donations (request):
+    contexts = {}
+    return render(request, 'donations/track_donations.html',context=contexts)
 
 class feedback_api(APIView):
     """ API ดึง feedback ทั้งหมดของ donation นั้น"""
     def get(self, request, donation_id):
-        donation = Donation.objects.get(id=donation_id)
+        if donation_id != 0:
+            donation = Donation.objects.get(id=donation_id)
         feeddback = Feedback.objects.all()
         serializer = FeedbackSerializer(feeddback, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

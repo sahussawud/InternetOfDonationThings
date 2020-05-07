@@ -20,6 +20,7 @@ from django.conf import settings
 
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from donations import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,7 @@ urlpatterns = [
     path('donations/', include('donations.urls')),
     path('login/', my_login, name='login'),
     path('profile/', my_profile, name='profile'),
-    path('tracking_test/', tracking_test, name='tracking_test')
+    path('tracking_test/', tracking_test, name='tracking_test'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
