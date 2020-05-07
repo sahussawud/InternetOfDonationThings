@@ -16,3 +16,5 @@ venv/
 map-tracker1/
 
 *.pyc
+*.pyc
+IODT/attendance/__pycache__/urls.cpython-38.pyc
