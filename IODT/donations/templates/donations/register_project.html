@@ -6,17 +6,34 @@
       <div class="col-sm-6">
         <h1>สร้างโครงการรับบริจาค</h1>
       </div>
+      {% if success %}
+      <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
+        <strong>{{ success }}</strong> Your donations was registerd to your inventory
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% elif danger %}
+      <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
+        <strong>{{ danger }}</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">สร้างโครงการรับบริจาค/li>
+          <li class="breadcrumb-item active">สร้างโครงการรับบริจาค</li>
         </ol>
       </div>
     </div>
   </div><!-- /.container-fluid -->
 </section>
 
-<!-- Main content -->
+<form method="post" action="{% url 'create_project' %}" id="image-form" enctype="multipart/form-data">
+  {% csrf_token %}
+  <!-- Main content -->
 <section class="content">
   <div class="row">
     <div class="col-md-6">
@@ -25,43 +42,49 @@
           <h3 class="card-title">ข้อมูลโครงการ</h3>
 
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+              title="Collapse">
               <i class="fas fa-minus"></i></button>
           </div>
         </div>
         <div class="card-body">
           <div class="form-group">
-            
+
             <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="exampleInputFile">
-                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                <input type="file" class="form-control" name="images" id="exampleInputFile" multiple>
+                <!-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
+                <!-- <input type="file" name="images" class="custom-file-input" id="exampleInputFile" multiple> -->
               </div>
-              <div class="input-group-append">
+              <!-- <div class="input-group-append">
                 <span class="input-group-text" id="">Upload</span>
-              </div>
+              </div> -->
             </div>
             <br>
             <label for="inputName">ชื่อโครงการ</label>
-            <input type="text" id="inputName" class="form-control">
+            {{form.name}}
+            <!-- <input type="text" id="inputName" class="form-control"> -->
           </div>
           <div class="form-group">
             <label for="inputClientCompany">จุดประสงค์โครงการ</label>
-            <input type="text" id="inputClientCompany" class="form-control">
+            {{form.propose}}
+            <!-- <input type="text" id="inputClientCompany" class="form-control"> -->
           </div>
           <div class="form-group">
             <label for="inputDescription">รายละเอียดโครงการ</label>
-            <textarea id="inputDescription" class="form-control" rows="4"></textarea>
+            {{form.desc}}
+            <!-- <textarea id="inputDescription" class="form-control" rows="4"></textarea> -->
           </div>
           <div class="form-group">
             <label for="inputStatus">ชนิดสิ่งของที่รับบริจาค</label>
-            <select class="form-control custom-select">
+            {{form.requiretype}}
+            <!-- <select class="form-control custom-select">
               <option selected disabled>Select one</option>
               <option>On Hold</option>
               <option>Canceled</option>
               <option>Success</option>
-            </select>
+            </select> -->
           </div>
         </div>
         <!-- /.card-body -->
@@ -74,25 +97,29 @@
           <h3 class="card-title">เงื่อนไขโครงการ</h3>
 
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+              title="Collapse">
               <i class="fas fa-minus"></i></button>
           </div>
         </div>
         <div class="card-body">
           <div class="form-group">
             <label for="inputEstimatedBudget">จำนวนคนที่จะได้รับการช่วยเหลือ</label>
-            <input type="number" id="inputEstimatedBudget" class="form-control">
+            {{form.helping_people}}
+            <!-- <input type="number" id="inputEstimatedBudget" class="form-control"> -->
           </div>
           <div class="form-group">
-            <label for="inputDescription">รายละเอียดโครงการ</label>
-            <textarea id="inputDescription" class="form-control" rows="4"></textarea>
+            <label for="inputDescription">ที่อยู่ของผู้จะได้รับบริจาค</label>
+            {{form.address}}
+            <!-- <textarea id="inputDescription" class="form-control" rows="4"></textarea> -->
           </div>
           <label for="inputEstimatedDuration">วันสิ้นสุดการรับ</label>
           <div class="input-group">
-            <button type="button" class="btn btn-default float-right" id="daterange-btn">
+            {{form.expire_date}}
+            <!-- <button type="button" class="btn btn-default float-right" id="daterange-btn">
               <i class="far fa-calendar-alt"></i> Date range picker
               <i class="fas fa-caret-down"></i>
-            </button>
+            </button> -->
           </div>
         </div>
         <!-- /.card-body -->
@@ -102,12 +129,13 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <a href="#" class="btn btn-secondary">Cancel</a>
+      <!-- <a href="#" class="btn btn-secondary">Cancel</a> -->
       <input type="submit" value="Create new Porject" class="btn btn-success float-right">
     </div>
   </div>
 </section>
-<!--
+</form>
+<!-- 
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -147,6 +175,6 @@
         <button type="submit" class='btn btn-success'>submit</button>
     </div>
     </form>
-</div> -->
+</div>  -->
 
 {% endblock content %}

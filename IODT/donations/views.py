@@ -141,6 +141,7 @@ def create_project(request):
         form = CreateProjectForm()
 
     contexts['form'] = form
+    print(form)
     return render(request, 'donations/register_project.html', context=contexts)
 
 
