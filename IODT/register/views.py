@@ -69,7 +69,13 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('register2')
+            modal = request.POST.get('modal')
+            if modal:
+                context['form'] = regForm()
+                context['modal'] = True
+                return render(request, 'report/index_2.html', context)
+            else:
+                return redirect('register2')
     else:
         form = regForm()
         context['form'] = form
