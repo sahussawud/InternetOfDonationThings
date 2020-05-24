@@ -1,6 +1,8 @@
 
+from django.db.models import Sum
 from pkg_resources import require
 
+from donations.models import RequireType
 from rest_framework import serializers
 
 from .models import Album, Donation, Feedback, Location, Picture, Project
@@ -47,12 +49,16 @@ class DonationSerializer(serializers.ModelSerializer):
         model = Donation
         field = ['id', 'name', 'date', 'project', 'location', 'album']
 
-from django.db.models import Sum
+class RequireTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RequireType
+        fields = ['id', 'name']
+
 class ProjectOverviewSerializer(serializers.ModelSerializer):
     location = LocationSerializer(required=False)
     album = AlbumSerializer()
     current_helping = serializers.SerializerMethodField()
-    
+    requiretype = RequireTypeSerializer(many=True)
     class Meta:
         model = Project
         fields = ['id', 'name', 'propose', 'requiretype', 'expire_date', 'recipient', 'location', 'album', 'helping_people', 'current_helping']
