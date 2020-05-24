@@ -15,6 +15,7 @@ urlpatterns = [
     path('track_donations/', views.track_donations, name='track_donations'),
 
     path('api/feedback/donation/<int:donation_id>/', views.feedback_api.as_view(), name='feedback_api'),
+    path('api/project/', views.project_api.as_view(), name='project_api'),
 
 
 ]

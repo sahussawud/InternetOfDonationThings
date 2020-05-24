@@ -1,6 +1,10 @@
 
-from .models import Feedback, Location, Donation, Album, Picture, Project
+from pkg_resources import require
+
 from rest_framework import serializers
+
+from .models import Album, Donation, Feedback, Location, Picture, Project
+
 
 class PictureSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,3 +46,17 @@ class DonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donation
         field = ['id', 'name', 'date', 'project', 'location', 'album']
+
+from django.db.models import Sum
+class ProjectOverviewSerializer(serializers.ModelSerializer):
+    location = LocationSerializer(required=False)
+    album = AlbumSerializer()
+    current_helping = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'propose', 'requiretype', 'expire_date', 'recipient', 'location', 'album', 'helping_people', 'current_helping']
+        read_only_fields = ['id', 'name', 'propose', 'requiretype', 'expire_date', 'recipient', 'location', 'album', 'helping_people', 'current_helping']
+    def get_current_helping(self, obj):
+            quantity = Donation.objects.filter(project=obj).aggregate(Sum('quantity'))
+            return quantity

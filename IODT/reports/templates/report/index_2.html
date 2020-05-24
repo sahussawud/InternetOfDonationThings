@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <br><br>
-<div class="container">
+<div class="container" id='app'>
   <div class="row">
     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -94,7 +94,8 @@
             <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
           </div>
           <br>
-          <button type="button" class="btn btn-warning btn-lg btn-block">ร่วมบริจาค</button>
+          <button type="button" class="btn btn-warning btn-lg btn-block">
+            <span class="glyphicon glyphicon-heart"></span> ร่วมบริจาค</button>
         </div>
       </div>
     </div>
@@ -128,3 +129,49 @@
   </div>
 </div>
 {% endblock content %}
+{% block footer %}
+<script>
+
+  var app = new Vue({
+      el: '#app',
+      data: {
+          hash: '{{ qrcode.hash }}'
+      },
+      methods: {
+          bindqrcode: function () {
+              axios.post('/donations/api/qrbinding/', {
+                  'hash': this.hash,
+                  'donation': this.donation
+              })
+                  .then(function (response) {
+                      console.log(response);
+                      app.qrcode = app.hash
+
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  });
+
+          },
+          print_qrcode: function (event) {
+              print(event.currentTarget.previousElementChild)
+          },
+          qrcode_delete: function () {
+              axios.delete('/donations/api/qrcode_delete/' + this.qrcode_id)
+                  .then(function (response) {
+                      console.log(response);
+                      console.log('delete success')
+                      app.qrcode = null
+                      app.qrcode_id = null
+
+                  })
+                  .catch(function (error) {
+                      console.log(error);
+                  });
+
+          },
+      }
+  })
+
+</script>
+{% endblock footer%}

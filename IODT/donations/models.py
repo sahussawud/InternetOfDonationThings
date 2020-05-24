@@ -30,7 +30,7 @@ class Location(models.Model):
 class RequireType(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=255)
-
+    
     def __str__(self):
         return self.name
     
@@ -55,7 +55,7 @@ class Project(models.Model):
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
     create_date = models.DateField(auto_now_add=True)
     expire_date = models.DateTimeField()
-    recipient = models.ForeignKey(Recipient,on_delete=models.SET_NULL, null=True)
+    recipient = models.ForeignKey(Recipient, on_delete=models.SET_NULL, null=True)
     album = models.OneToOneField(Album, on_delete=models.CASCADE, null=True)
 
     # def amount_donation(self):

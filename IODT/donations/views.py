@@ -20,10 +20,11 @@ from django.urls import reverse
 
 import pyqrcode
 from donations.forms import CreateProjectForm, DonationForm, FeedbackForm
-from donations.models import Album, Donation, Location, Picture, Project, Feedback
+from donations.models import Album, Donation, Location, Picture, Project, Feedback, RequireType
 from register.models import Doner, Recipient
 
 from .models import Qrcode
+from django.db.models import Q
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -291,6 +292,35 @@ class feedback_api(APIView):
         else:
             feeddback = Feedback.objects.all()
         serializer = FeedbackSerializer(feeddback, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class project_api(APIView):
+    """ API ดึง โครงการ เพื่อดูสำหรับเข้าไปบริจาคทื่หน้าหลัก
+        สามารถที่จะ search ได้ ทั้ง category search เเละ keyword
+        ผ่าน params requiretype(ตามไอดีของ requiretype ที่อยู่ใน db)
+                    ,keyword(คำค้นหา)
+        """
+    def get(self, request):
+        """requiretype = id"""
+        requiretype = request.GET.get('requiretype')
+        keyword = request.GET.get('keyword')
+        """ถ้ามีการเลือกประเภท"""
+        if requiretype:
+            """มีการใส่keyword"""
+            requiretype_ob = RequireType.objects.get(id=requiretype)
+            if keyword:
+                project = Project.objects.filter(Q(requiretype=requiretype_ob),
+                                                Q(name__contains=keyword) | Q(desc__contains=keyword))
+            else:
+                project = Project.objects.filter(requiretype=requiretype_ob)
+        else:
+            """ถ้าไม่มีการเลือกประเภท"""
+            if keyword:
+                project = Project.objects.filter(Q(name__contains=keyword) | Q(desc__contains=keyword))
+            else:
+                project = Project.objects.all()
+        project = project.order_by('expire_date')
+        serializer = ProjectOverviewSerializer(project, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # class last_location_of_donation(APIView):
