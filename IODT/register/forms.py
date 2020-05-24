@@ -5,14 +5,14 @@ from django.db import models
 
 class regForm(UserCreationForm):
     username = forms.CharField(widget=
-        forms.TextInput(attrs={'class':'form-control', 'placeholder':"Username"}),
+        forms.TextInput(attrs={'class':'form-control'}),
     )
     password1 = forms.CharField(widget=
-        forms.TextInput(attrs={'class':'form-control', 'type':'password', 'placeholder':"Password"}),
+        forms.TextInput(attrs={'class':'form-control', 'type':'password'}),
         label="Password"
     )
     password2 = forms.CharField(widget=
-        forms.TextInput(attrs={'class':'form-control', 'type':'password', 'placeholder':"Confirm password"}),
+        forms.TextInput(attrs={'class':'form-control', 'type':'password'}),
         label="Password Confirm"
     )
     # first_name = forms.CharField(widget=
@@ -22,14 +22,14 @@ class regForm(UserCreationForm):
     #     forms.TextInput(attrs={'class':'form-control'}),
     # )
     phone = forms.CharField(widget=
-        forms.TextInput(attrs={'class':'form-control', 'placeholder':"Phone number"}),
+        forms.TextInput(attrs={'class':'form-control'}),
     )
     # address = forms.CharField(widget=
     #     forms.Textarea(attrs={'class':'form-control', 'style':'height:100px'}),
     # )
     is_accept = forms.BooleanField()
     email = forms.EmailField(widget=
-        forms.TextInput(attrs={'class':'form-control', 'placeholder':"Email"}),
+        forms.TextInput(attrs={'class':'form-control'}),
     )
     profile_pic = forms.ImageField(required=True, widget=
         forms.FileInput(attrs={})

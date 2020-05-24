@@ -361,14 +361,14 @@
                         </a>
 
                         <p></p>
-                        <a href="#register_form_1" class="nav-link btn-warning text-center" data-toggle="modal">
+                        <!-- <a href="#registor_form" class="nav-link btn-warning text-center" data-toggle="modal">
                             <i class="fas fa-registered" style="margin-right: 5px;"></i>
-                            <p>Register</p>
-                        </a>
-                        <!-- <a href="{% url 'register' %}" class="nav-link btn-warning text-center">
-                            <i class="fas fa-registered" style="margin-right: 5px;"></i>
-                            <p>Register</p>
+                            <p>Registor</p>
                         </a> -->
+                        <a href="{% url 'register' %}" class="nav-link btn-warning text-center">
+                            <i class="fas fa-registered" style="margin-right: 5px;"></i>
+                            <p>Registor</p>
+                        </a>
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -405,7 +405,65 @@
         <!-- Modal LOGIN -->
         {% include 'login.html' %}
         <!-- Modal REGISTOR -->
-        {% include 'register.html' %}
+        <div id="registor_form" class="modal fade">
+            <div class="modal-dialog modal-login">
+                <div class="modal-content" style="width:500px;">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Registor Donor</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/examples/actions/confirmation.php" method="post">
+                            <div class="form-group">
+                                <i class="fa fa-user"></i>
+                                <input type="text" class="form-control" placeholder="Username" required="required">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-lock"></i>
+                                <input type="password" class="form-control" placeholder="Password" required="required">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-lock"></i>
+                                <input type="password" class="form-control" placeholder="Confirm password"
+                                    required="required">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-at"></i>
+                                <input type="email" class="form-control" placeholder="Email" required="required">
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-phone"></i>
+                                <input type="phone" class="form-control" placeholder="Phone number" required="required">
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <i class="fa fa-signature"></i>
+                                        <input type="text" class="form-control" placeholder="First name">
+                                    </div>
+                                    <div class="col">
+                                        <i class="fa fa-signature"></i>
+                                        <input type="text" class="form-control" placeholder="Last name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <i class="fa fa-map-marked-alt"></i>
+                                <input type="text" class="form-control" id="inputAddress2" placeholder="Address">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Sign up">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="btn btn-success btn-block btn-lg" value="Registor Foundation">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -482,11 +540,6 @@
     {% comment %}
     <script src="{% static 'dist/js/demo.js' %}"></script> {% endcomment %}
     <script>
-        $(document).ready(function() {
-            {% if modal %}
-                $('#register_form_2').modal('show');
-            {% endif %}
-        });
         $(document).on("click", ".browse", function () {
             var file = $(this).parents().find(".file");
             file.trigger("click");

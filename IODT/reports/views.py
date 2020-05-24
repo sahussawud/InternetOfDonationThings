@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from donations.models import Project, Donation, Album, Picture
-from register.forms import regForm
 
 # Create your views here.
 
@@ -18,8 +17,7 @@ def index(request):
     user = request.user
     if user.is_authenticated:
         context[user] = request.user
-    context['form'] = regForm()
-    return render(request, 'report/index_2.html', context)
+    return render(request, 'report/index_2.html',{})
 
 def project_view(request, project_id):
     contexts = {}
