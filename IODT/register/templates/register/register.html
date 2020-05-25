@@ -36,26 +36,23 @@
             {% endif %}
         </div>
         {% endfor %}
-        <img src="" class="m-3 d-block img-responsive" style="height: 150px;" id="img_profile">
+        <img src="" class="m-3 d-block img-responsive" style="max-height: 150px; max-width: 150px;" id="preview2">
         <button type="submit" class="btn btn-success mb-5">Next</button>
 </form>
 
 <script>
 
-    $(document).ready(function () {
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
+    $('input[type="file"]').change(function (e) {
+        var fileName = e.target.files[0].name;
+        $("#file").val(fileName);
 
-                    $('#img_profile').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        $("#id_profile_pic").change(function () {
-            readURL(this);
-        });
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            document.getElementById("preview2").src = e.target.result;
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
     });
 
     function fill() {

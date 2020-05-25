@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from donations.models import Project, Donation, Album, Picture
-
+from register.forms import regForm
+from register.models import Organization
 # Create your views here.
 
 def dashboard(request):
@@ -17,7 +18,8 @@ def index(request):
     user = request.user
     if user.is_authenticated:
         context[user] = request.user
-    return render(request, 'report/index_2.html',{})
+    context['form'] = regForm()
+    return render(request, 'report/index_2.html', context)
 
 def project_view(request, project_id):
     contexts = {}

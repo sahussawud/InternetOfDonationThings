@@ -69,9 +69,17 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('register2')
+            modal = request.POST.get('modal')
+            if modal:
+                context['form'] = regForm()
+                context['modal'] = True
+                return render(request, 'report/index_2.html', context)
+            else:
+                context['modal'] = 'x'
+                return redirect('register2')
     else:
         form = regForm()
+        context['register'] = True
         context['form'] = form
 
     return render(request, 'register/register.html', context)
@@ -131,6 +139,8 @@ def register2(request):
                 user.save()
                 recipient_form_person.save()
         return redirect('profile')
+    context['modal'] = 'x'
+    context['register'] = True
     return render(request, 'register/register2.html', context)
 
 @login_required
