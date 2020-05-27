@@ -4,6 +4,7 @@ import json
 import random
 from builtins import object
 from io import BytesIO
+from datetime import date
 
 import qrcode
 from django.conf import settings
@@ -70,6 +71,8 @@ def register_donations(request):
             new_form.album = album
             new_form.save()
             contexts['success'] = 'บันทึกสำเร็จ'
+            messages.success(request, 'ลงทะเบียน '+new_form.name+' สำเร็จ')
+            return redirect('donation_list')
         else:
             contexts['danger'] = 'บันทึกไม่สำเร็จ'
             form = DonationForm()
@@ -298,12 +301,13 @@ class project_api(APIView):
     """ API ดึง โครงการ เพื่อดูสำหรับเข้าไปบริจาคทื่หน้าหลัก
         สามารถที่จะ search ได้ ทั้ง category search เเละ keyword
         ผ่าน params requiretype(ตามไอดีของ requiretype ที่อยู่ใน db)
-                    ,keyword(คำค้นหา)
+                    ,keyword(คำค้นหา), all_select(ทั้งหมด หรือ เอาเเค่ที่ยังไม่ปิดรับ)
         """
     def get(self, request):
         """requiretype = id"""
         requiretype = request.GET.get('requiretype')
         keyword = request.GET.get('keyword')
+        active_project = request.GET.get('active_project')
         """ถ้ามีการเลือกประเภท"""
         if requiretype:
             """มีการใส่keyword"""
@@ -319,10 +323,19 @@ class project_api(APIView):
                 project = Project.objects.filter(Q(name__contains=keyword) | Q(desc__contains=keyword))
             else:
                 project = Project.objects.all()
+        if active_project:
+            project = project.filter(expire_date__gte=date.today())
+
         project = project.order_by('expire_date')
         serializer = ProjectOverviewSerializer(project, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class requiretype_api(APIView):
+    def get(self, request):
+        requiretype_ob = RequireType.objects.all()
+        serializer = RequireTypeSerializer(requiretype_ob, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
 # class last_location_of_donation(APIView):
 #     """ API ดึง location ล่าสุดของของบริจาคทั้งหมด """
 #     def get(self, request):

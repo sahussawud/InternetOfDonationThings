@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css'%}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Ionicons -->
     {% comment %}
     <link rel="stylesheet" href="{% static 'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css' %}">
@@ -44,6 +45,14 @@
     {% endblock Scripts %}
 
     <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap');
+        body{
+            font-family: 'Kanit', sans-serif;
+        }
+        a.btn.heart::before {
+            font-family: fontAwesome;
+            content: "\f004";
+        }
         .modal-login {
             color: #636363;
             width: 350px;
@@ -402,6 +411,7 @@
         <!-- Modal LOGIN -->
         {% include 'login.html' %}
         <!-- Modal REGISTOR -->
+        
         {% if not register %}
             {% include 'register.html' %}
         {% endif %}

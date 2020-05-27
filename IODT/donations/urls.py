@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('api/feedback/donation/<int:donation_id>/', views.feedback_api.as_view(), name='feedback_api'),
     path('api/project/', views.project_api.as_view(), name='project_api'),
+    path('api/requiretype/', views.requiretype_api.as_view(), name='requiretype_api'),
 
 
 ]
