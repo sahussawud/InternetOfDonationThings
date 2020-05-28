@@ -71,7 +71,6 @@ class Donation(models.Model):
         ('Pending','รอการยืนยัน'),
         ('Recieve','ได้รับของบริจาค')
     )
-
     CONDITION = (
         ('1','ชำรุด'),
         ('2','ต้องซ่อม'),

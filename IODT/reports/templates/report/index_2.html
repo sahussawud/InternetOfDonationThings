@@ -98,9 +98,10 @@
   <div class="row row-cols-1 row-cols-md-3">
     <div class="col mb-4" v-for="project in projects">
       <div class="item card h-100">
-        <span class="notify-badge badge badge-success" style="font-size:1rem;" v-if='project.status=="active"'>เปิดรับบริจาค</span>
-        <span class="notify-badge badge badge-danger" style="font-size:1rem;" v-else-if='project.status=="deactive"'>ปิดรับบริจาค</span>
-        <span class="notify-badge badge badge-warning" style="font-size:1rem;" v-else>กำลังจะปิดรับ</span>
+        <span class="notify-badge badge badge-success" style="font-size:1rem;" v-if='project.status=="open"'>เปิดรับบริจาค</span>
+        <span class="notify-badge badge badge-danger" style="font-size:1rem;" v-else-if='project.status=="close"'>ปิดรับบริจาค</span>
+        <span class="notify-badge badge badge-danger" style="font-size:1rem;" v-else-if='project.status=="process"'>ดำเนินการ</span>
+        <span class="notify-badge badge badge-warning" style="font-size:1rem;" v-else>เสร็จสิ้น</span>
 
         <img v-bind:src="project.album.picture_set[0].url" class="card-img-top" alt="..." style=" object-fit: cover;
         object-position: 0 0;

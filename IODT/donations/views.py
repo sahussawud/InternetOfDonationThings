@@ -148,7 +148,6 @@ def create_project(request):
     print(form)
     return render(request, 'donations/register_project.html', context=contexts)
 
-
 @login_required
 def tracking(request, donation_id):
     contexts={}
@@ -336,13 +335,5 @@ class requiretype_api(APIView):
         serializer = RequireTypeSerializer(requiretype_ob, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
-# class last_location_of_donation(APIView):
-#     """ API ดึง location ล่าสุดของของบริจาคทั้งหมด """
-#     def get(self, request):
-#         if request.GET.get('donor_id'):
-#             donor = Doner.objects.get(id=request.GET.get('donor_id'))
-#             donation = Donation.objects.filter(donor=donor)
-#             feedback = Feedback.objects.filter(donation=donation)
-#             serializer = FeedbackSerializer(feedback, many=True)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
+
 
