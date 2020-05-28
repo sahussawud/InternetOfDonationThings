@@ -32,7 +32,7 @@
                     <td>{{project.get_status_display}}</td>
                     <td>{{project.expire_date}}</td>
                     <td>
-                        <a href="{% url 'project_view' project_id=project.id %}">
+                        <a href="{% url 'project_management' project_id=project.id %}">
                             <div class="btn btn-success" id="">รายละเอียด</div>
                         </a>
                     </td>

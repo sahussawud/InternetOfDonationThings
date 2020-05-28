@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from donations.models import RequireType
 from rest_framework import serializers
+from django.db.models import Count
 
 from .models import Album, Donation, Feedback, Location, Picture, Project
 
@@ -80,3 +81,31 @@ class ProjectOverviewSerializer(serializers.ModelSerializer):
     #     else:
     #         status = 'patial_deactive'
     #     return status
+
+class ProjectSummarySerializer(serializers.ModelSerializer):
+    status_donation = serializers.SerializerMethodField()
+    expire_duration = serializers.SerializerMethodField()
+    condition_count = serializers.SerializerMethodField()
+    class Meta:
+        model = Project
+        fields = ['id', 'expire_duration', 'status', 'status_donation', 'condition_count']
+        read_only_fields = ['id', 'expire_duration', 'status_donation', 'condition_count']
+    def get_status_donation(self, obj):
+        quantity = Donation.objects.filter(project=obj).values('status').annotate(amount=Count('status'))
+        return quantity 
+    def get_expire_duration(self, obj):
+        delta = obj.expire_date-timezone.now()
+        return { 'date': str(delta.days),
+                 'hour':(datetime.utcfromtimestamp(0) + delta).strftime('%H'),
+                 'min':(datetime.utcfromtimestamp(0) + delta).strftime('%M'),
+                 'from': timezone.now()}
+    def get_condition_count(self, obj):
+        quantity = Donation.objects.filter(project=obj).values('condition').annotate(amount=Count('condition'))
+        return quantity
+
+    def create(self, validate_data):
+        return Project.objects.create(**validate_data)
+
+    def update(self, instance, validate_data):
+        instance.status = validate_data.get('status', instance.status)
+        return instance

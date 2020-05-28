@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import *
+from donations.serializers import ProjectSummarySerializer
 
 # Create your views here.
 
@@ -50,14 +50,21 @@ def project_management(request, project_id):
     return render(request, 'report/project_management.html',context=contexts)
 
 class project_summary_api(APIView):
-    """ API ดึง feedback ทั้งหมดของ donation นั้น
-        ส่ง donor id ทาง params มา รหัสผู้บริจาค"""
+    """ API ดึงข้อมูลสรุปทั้งหมดของ ของโปรเจค โดย รับ Project_id ทาง path 
+        สามารถ patch สถานะโครงการได้"""
     def get(self, request, project_id):
-        """ IF กรณีต้องการจะดูทั้งหมดจะส่ง id_donation = 0 มา """
-        if donation_id != 0:
-            donation = Donation.objects.get(id=donation_id)
-            feeddback = Feedback.objects.filter(donation=donation)
-        else:
-            feeddback = Feedback.objects.all()
-        serializer = FeedbackSerializer(feeddback, many=True)
+        """ ส่งข้อมูลสรุปไป """
+        project = Project.objects.get(id=project_id)
+        print(project)
+        serializer = ProjectSummarySerializer(project)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    def patch(self, request, project_id):
+        """ ส่งข้อมูลสรุปไป """
+        project = Project.objects.get(id=project_id)
+        serializer = ProjectSummarySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            item = Project.objects.get(id=project_id)
+            serializer = ProjectSummarySerializer(item)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
