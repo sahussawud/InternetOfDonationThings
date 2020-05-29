@@ -90,7 +90,8 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="" v-on:click.prevent='active_project_request("")'>โครงการทั้งหมด</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="" v-on:click.prevent='active_project_request("True")'>โครงการกำลังรับบริจาค</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href=""
+            v-on:click.prevent='active_project_request("True")'>โครงการกำลังรับบริจาค</a></li>
       </ol>
     </nav>
   </div>
@@ -98,9 +99,12 @@
   <div class="row row-cols-1 row-cols-md-3">
     <div class="col mb-4" v-for="project in projects">
       <div class="item card h-100">
-        <span class="notify-badge badge badge-success" style="font-size:1rem;" v-if='project.status=="open"'>เปิดรับบริจาค</span>
-        <span class="notify-badge badge badge-danger" style="font-size:1rem;" v-else-if='project.status=="close"'>ปิดรับบริจาค</span>
-        <span class="notify-badge badge badge-danger" style="font-size:1rem;" v-else-if='project.status=="process"'>ดำเนินการ</span>
+        <span class="notify-badge badge badge-success" style="font-size:1rem;"
+          v-if='project.status=="open"'>เปิดรับบริจาค</span>
+        <span class="notify-badge badge badge-danger" style="font-size:1rem;"
+          v-else-if='project.status=="close"'>ปิดรับบริจาค</span>
+        <span class="notify-badge badge badge-danger" style="font-size:1rem;"
+          v-else-if='project.status=="process"'>ดำเนินการ</span>
         <span class="notify-badge badge badge-warning" style="font-size:1rem;" v-else>เสร็จสิ้น</span>
 
         <img v-bind:src="project.album.picture_set[0].url" class="card-img-top" alt="..." style=" object-fit: cover;
@@ -130,7 +134,8 @@
             </div>
           </div>
           <br>
-          <a href="{% url 'donation_list' %}" class="btn heart text-white btn-lg btn-block" style="background-color: #b3607eb3;"> ร่วมบริจาค</a>
+          <a href="{% url 'donation_list' %}" class="btn heart text-white btn-lg btn-block"
+            style="background-color: #b3607eb3;"> ร่วมบริจาค</a>
         </div>
       </div>
     </div>
@@ -152,7 +157,7 @@
     methods: {
       percent_progress: function (current, all) {
         // `this` points to the vm instance
-        return Math.floor((current/all)*100)
+        return Math.floor((current / all) * 100)
       },
       get_project: function () {
         let self = this
@@ -185,8 +190,8 @@
             console.log(error);
           });
 
-      },active_project_request: function (value) {
-        this.active_project=value
+      }, active_project_request: function (value) {
+        this.active_project = value
         this.get_project()
       }
     }, created() {
@@ -194,6 +199,25 @@
       this.get_requiretype()
     }
   })
+
+  id_tracking = 0;
+  console.log(id_tracking);
+  axios.get('/donations/api/feedback/donation/' + id_tracking)
+    .then(function (response) {
+      data = response.data
+      let main_data = Object.create({})
+      data.forEach(element => {
+        if (!main_data[element.donation.id]) {
+          main_data[element.donation.id] = [element]
+        } else {
+          main_data[element.donation.id].push(element)
+        }
+      });
+      console.log('data', main_data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
 
 </script>
 {% endblock content %}

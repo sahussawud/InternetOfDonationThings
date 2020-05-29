@@ -30,14 +30,6 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ['id', 'ladtitude', 'longtitude']
         read_only_fields = ['id']
 
-class FeedbackSerializer(serializers.ModelSerializer):
-    location = LocationSerializer(required=False)
-    album = AlbumSerializer(required=False)
-    class Meta:
-        model = Feedback
-        fields = ['id', 'sender', 'header', 'detail', 'sent_date', 'location', 'album']
-        read_only_fields = ['id']
-
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -50,7 +42,16 @@ class DonationSerializer(serializers.ModelSerializer):
     project = ProjectSerializer(required=False)
     class Meta:
         model = Donation
-        field = ['id', 'name', 'date', 'project', 'location', 'album']
+        fields = ['id', 'name', 'date', 'project', 'location', 'album']
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    location = LocationSerializer(required=False)
+    album = AlbumSerializer(required=False)
+    donation = DonationSerializer()
+    class Meta:
+        model = Feedback
+        fields = ['id', 'sender', 'header', 'detail', 'sent_date', 'location', 'album', 'donation']
+        read_only_fields = ['id']
 
 class RequireTypeSerializer(serializers.ModelSerializer):
     class Meta:

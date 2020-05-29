@@ -31,6 +31,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from donations.serializers import *
+from django.db.models import Count
 
 # Create your views here.
 @login_required
@@ -264,7 +265,7 @@ def feedback_by_qrcode(request, hash_id):
 
                 newform.donation = qrcode.donation
                 newform.save()
-                messages.success(request, 'สง่ข้อความสำเร็จ.')
+                messages.success(request, 'ส่งข้อความสำเร็จ.')
             else:
                 form = FeedbackForm(request.POST)
                 messages.error(request, 'กรุณากรอกข้อความใหม่.')
@@ -292,7 +293,7 @@ class feedback_api(APIView):
             donation = Donation.objects.get(id=donation_id)
             feeddback = Feedback.objects.filter(donation=donation)
         else:
-            feeddback = Feedback.objects.all()
+            feeddback = Feedback.objects.all().order_by("donation")
         serializer = FeedbackSerializer(feeddback, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
