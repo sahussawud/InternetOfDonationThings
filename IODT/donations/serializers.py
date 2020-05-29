@@ -91,21 +91,34 @@ class ProjectSummarySerializer(serializers.ModelSerializer):
         fields = ['id', 'expire_duration', 'status', 'status_donation', 'condition_count']
         read_only_fields = ['id', 'expire_duration', 'status_donation', 'condition_count']
     def get_status_donation(self, obj):
-        quantity = Donation.objects.filter(project=obj).values('status').annotate(amount=Count('status'))
-        return quantity 
+        item = {}
+        donation = Donation.objects.filter(project=obj)
+        quantity = donation.values('status').annotate(amount=Count('status'))
+        for i in quantity:
+            item['Pending'] = i.get('amount') if i.get('status') == 'Pending' else 0
+            item['Recieve'] = i.get('amount') if i.get('status') == 'Recieve' else 0
+        item['All'] = obj.helping_people
+        return item
+
     def get_expire_duration(self, obj):
         delta = obj.expire_date-timezone.now()
-        return { 'date': str(delta.days),
+        return { 'day': str(delta.days),
                  'hour':(datetime.utcfromtimestamp(0) + delta).strftime('%H'),
                  'min':(datetime.utcfromtimestamp(0) + delta).strftime('%M'),
                  'from': timezone.now()}
+
     def get_condition_count(self, obj):
-        quantity = Donation.objects.filter(project=obj).values('condition').annotate(amount=Count('condition'))
-        return quantity
-
-    def create(self, validate_data):
-        return Project.objects.create(**validate_data)
-
-    def update(self, instance, validate_data):
-        instance.status = validate_data.get('status', instance.status)
-        return instance
+        item = {'fix':0,'stardard':0,'good':0, 'broke':0, 'best':0}
+        quantity = Donation.objects.filter(project=obj).values('condition').annotate(amount=Sum('quantity'))
+        for i in quantity:
+            if i.get('condition') == '1':
+                item['broke'] = i.get('amount')
+            if i.get('condition') == '2':
+                item['fix'] = i.get('amount')
+            if i.get('condition') == '3':   
+                item['standard'] = i.get('amount')
+            if i.get('condition') == '4': 
+                item['good'] = i.get('amount')
+            if i.get('condition') == '5':
+                item['best'] = i.get('amount') 
+        return item

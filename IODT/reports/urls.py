@@ -9,4 +9,5 @@ urlpatterns = [
     # path('login/', views.login, name='login'),
 
     path('api/project_summary/<int:project_id>/', views.project_summary_api.as_view(), name='project_summary_api'),
+    path('api/change_status/', views.change_status, name='change_status'),
 ]

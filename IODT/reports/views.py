@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -11,6 +11,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from donations.serializers import ProjectSummarySerializer
+
+import json
 
 # Create your views here.
 
@@ -58,13 +60,15 @@ class project_summary_api(APIView):
         print(project)
         serializer = ProjectSummarySerializer(project)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    def patch(self, request, project_id):
-        """ ส่งข้อมูลสรุปไป """
-        project = Project.objects.get(id=project_id)
-        serializer = ProjectSummarySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            item = Project.objects.get(id=project_id)
-            serializer = ProjectSummarySerializer(item)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def change_status(request):
+    if request.method == 'PATCH':
+    # """project_id, status"""
+        data = json.loads(request.body)
+        project = Project.objects.get(pk=int(data['project_id']))
+        project.status = data['status']
+        project.save()
+        print(project)
+        serializer = ProjectSummarySerializer(project)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+    return HttpResponse(status=405)

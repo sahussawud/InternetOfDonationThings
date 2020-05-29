@@ -5,15 +5,20 @@
 {% block content %}
 {% load static %}
 <style>
-    .dashboard{
+    .dashboard {
         width: 100%;
         height: 6em;
     }
-    .num_dashboard{
+
+    .num_dashboard {
         font-size: 3em;
     }
+
+    .active {
+        background-color: rgb(255, 127, 202) !important;
+    }
 </style>
-<div class="container">
+<div class="container" id='app'>
     <div class="row">
         <div class="col-10">
             {% include "messages.html" %}
@@ -72,23 +77,51 @@
 
                     <h1 class="card-header">สรุปโครงการ</h1>
                     <div class="row justify-content-between mx-4 my-4">
-                        <div class="dashboard bg-success col-3">ยืนยันเเล้ว <div class="num_dashboard">5</div></div>
-                        <div class="dashboard bg-warning col-3">รอการยืนยัน <div class="num_dashboard">5</div></div>
-                        <div class="dashboard bg-danger col-3">ต้องการ <div class="num_dashboard">5</div></div>
+                        <div class="dashboard bg-success col-3">ยืนยันเเล้ว <div class="num_dashboard">[[
+                                project_summary.status_donation.Recieve ]]</div>
+                        </div>
+                        <div class="dashboard bg-warning col-3">รอการยืนยัน <div class="num_dashboard">[[
+                                project_summary.status_donation.Pending ]]</div>
+                        </div>
+                        <div class="dashboard bg-danger col-3">ต้องการ <div class="num_dashboard">[[
+                                project_summary.status_donation.All ]]</div>
+                        </div>
                     </div>
-                    <h1 class="card-header">สิ้นสุดโครงการใน : 1 เดือน 12 วัน</h1>
+                    <h5 class="card-header">สิ้นสุดโครงการใน : [[ project_summary.expire_duration.day ]] วัน [[
+                        project_summary.expire_duration.hour]] ชั่วโมง [[project_summary.expire_duration.min]] นาที</h5>
                     <div class="row justify-content-center">
                         <canvas id="pie-chart" width="800" height="450"></canvas>
                     </div>
                     <div class="row justify-content-center my-5">
-                        <div class="btn-group btn-group-justified">
-                        <a href="#" class="btn btn-success">เปิดรับบริจาค</a>
-                        <a href="#" class="btn btn-secondary">ปิดรับบริจาค</a>
-                        <a href="#" class="btn btn-secondary">ดำเนินการ</a>
-                        <a href="#" class="btn btn-secondary">เสร็จสิ้น</a>
-                      </div>
+                        <!-- <div class="btn-group btn-group-justified">
+                            <a href="#" class="btn btn-success">เปิดรับบริจาค</a>
+                            <a href="#" class="btn btn-secondary">ปิดรับบริจาค</a>
+                            <a href="#" class="btn btn-secondary">ดำเนินการ</a>
+                            <a href="#" class="btn btn-secondary">เสร็จสิ้น</a>
+                        </div> -->
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label id='open' class="btn btn-secondary">
+                                <input type="radio" name="options" id="option1" v-on:click='change_status("open")'>
+                                เปิดรับบริจาค
+                            </label>
+                            <label id='close' class="btn btn-secondary">
+                                <input type="radio" name="options" id="option2" v-on:click='change_status("close")'>
+                                ปิดรับบริจาค
+                            </label>
+                            <label id='process' class="btn btn-secondary">
+                                <input type="radio" name="options" id="option3" v-on:click='change_status("process")'>
+                                ดำเนินการ
+                            </label>
+                            <label id='finished' class="btn btn-secondary">
+                                <input type="radio" name="options" id="option3" v-on:click='change_status("finished")'>
+                                เสร็จสิ้น
+                            </label>
+                        </div>
                     </div>
-                    
+
+
+
+
                 </div>
             </div>
         </div>
@@ -107,6 +140,7 @@
                     <th scope="col">สภาพ</th>
                     <th scope="col">จำนวน</th>
                     <th scope="col">สถานะ</th>
+                    <th scope="col"></th>
 
 
                 </tr>
@@ -121,6 +155,11 @@
                     <td>{{donation.get_condition_display}}</td>
                     <td>{{donation.quantity}}</td>
                     <td>{{donation.get_status_display}}</td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'tracking' donation.id %}">รายละเอียด</a>
+                        <a 
+                            class="btn btn-success btn-sm" href="{% url 'confirm_donation' donation_id=donation.id status='Recieve' %}">ยืนยัน</a>
+                        </td>
 
                 </tr>
                 {% endfor %}
@@ -129,23 +168,99 @@
     </div>
 </div>
 <script>
-    new Chart(document.getElementById("pie-chart"), {
-    type: 'pie',
-    data: {
-      labels: ["ชำรุด", "ต้องซ่อม", "ดี", "เสมือนใหม่", "ใหม่"],
-      datasets: [{
-        label: "สภาพสิ่งของบริจาค",
-        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-        data: [2478,5267,734,784,433]
-      }]
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'สภาพสิ่งของบริจาคโดยรวม'
-      }
+    axios.defaults.xsrfCookieName = 'csrftoken'
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN'
+    var app = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            project_summary: [],
+            data: [],
+            status: ''
+        },
+        methods: {
+            get_project_summary: function () {
+                let self = this
+                axios.get('/api/project_summary/{{ project.id }}/', {
+                    params: {
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        app.project_summary = response.data;
+                        app.data = [app.project_summary.condition_count.broke, app.project_summary.condition_count.fix, app.project_summary.condition_count.standard, app.project_summary.condition_count.good, app.project_summary.condition_count.best]
+                        app.status = app.project_summary.status
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
+            change_status: function (status) {
+                if (confirm("คุณต้องการเปลี่ยนสถานะโครงการ?")) {
+                    let self = this
+                    axios.patch('/api/change_status/', {
+                        project_id: '{{ project.id }}',
+                        status: status
+                    })
+                        .then(function (response) {
+                            console.log(response);
+                            app.project_summary = response.data;
+                            app.update_status()
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                } 
+            }, update_status: function () {
+
+                // if (app.status == "finished") {
+                //     var element = document.getElementById('finished')
+                //     element.classList.add("active");
+                // }
+                // else if (app.status == 'close') {
+
+                //     var element = document.getElementById('close')
+                //     element.classList.add("active");
+                // }
+                // else if (app.status == 'process') {
+
+                //     var element = document.getElementById('process')
+                //     element.classList.add("active");
+                // }
+                // else if (app.status == 'open') {
+                //     var element = document.getElementById('open')
+                //     element.classList.add("active");
+                // }
+            }
+        }, created() {
+            this.get_project_summary()
+
+
+        }
+    })
+    setTimeout(create_pie, 500);
+    function create_pie() {
+
+        new Chart(document.getElementById("pie-chart"), {
+            type: 'pie',
+            data: {
+                labels: ["ชำรุด", "ต้องซ่อม", "ดี", "เสมือนใหม่", "ใหม่"],
+                datasets: [{
+                    label: "สภาพสิ่งของบริจาค",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: app.data
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'สภาพสิ่งของบริจาคโดยรวม'
+                }
+            }
+        });
     }
-});
 </script>
 
 

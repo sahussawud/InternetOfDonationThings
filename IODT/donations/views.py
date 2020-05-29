@@ -335,5 +335,16 @@ class requiretype_api(APIView):
         serializer = RequireTypeSerializer(requiretype_ob, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
-
+@login_required
+def confirm_donation(request, donation_id, status):
+    if status in ['Yet','Pending','Recieve']:
+        donation = Donation.objects.get(pk=donation_id)
+        donation.status = status
+        donation.save()
+        messages.success(request, 'อัพเดตสถานะของบริจาค รหัส: '+str(donation.id)+' สำเร็จ!')
+    else:
+        messages.success(request, 'อัพเดตสถานะของบริจาค รหัส: '+str(donation.id)+' ไม่สำเร็จ!')
+    return redirect('project_management', project_id=donation.project.id)
+    
+    
 

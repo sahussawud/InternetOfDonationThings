@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/qrcode_delete/<int:qrcode_id>', views.qrcode_delete, name='qrcode_delete'),
     path('feedback/<str:hash_id>/', views.feedback_by_qrcode, name='feedback_by_qrcode'),
     path('track_donations/', views.track_donations, name='track_donations'),
+    path('confirm/<int:donation_id>/<slug:status>/', views.confirm_donation, name='confirm_donation'),
 
     path('api/feedback/donation/<int:donation_id>/', views.feedback_api.as_view(), name='feedback_api'),
     path('api/project/', views.project_api.as_view(), name='project_api'),
