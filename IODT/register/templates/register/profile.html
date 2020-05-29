@@ -10,7 +10,11 @@
         <div class="form-group col-3 text-center">
             <img src="/media/{{profile_pic}}" alt="profile" height="150" width="150"> 
             <h5><label class="text-success">Username</label><br><label> {{username}}</label></h5>
+            <a href="{% url 'ChangePassword' %}">
+                <div class="btn btn-primary" id="">เปลี่ยนรหัสผ่าน</div>
+            </a>
         </div>
+
         {% if type == 'donor' %}
         <div class="col" name="donor">
             <div class="mb-2">

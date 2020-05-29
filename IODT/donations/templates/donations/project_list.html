@@ -40,10 +40,13 @@
                 {% empty %}
                 <tr >
                     <td colspan="2">ไม่มีโครงการ</td>
-                </tr>  
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <a href="{% url 'create_project' %}">
+            <div class="btn btn-primary" id="">สร้างโครงการ</div>
+        </a>
     </div>
 </div>
 
