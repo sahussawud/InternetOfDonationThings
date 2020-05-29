@@ -2,11 +2,12 @@
 {% block Scripts %}
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {% endblock Scripts %}
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6">
             {% include "messages.html" %}
             <div class="card mb-3 ">
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -14,13 +15,17 @@
                         {% for picture in pictures %}
                         {% if forloop.first %}
                         <div class="carousel-item active">
-                            <img src="/media/{{ picture.url }}" class="d-block " alt="{{picture.name}}"
-                                style="height: 480px; width: 25vw;">
+                            <img src="/media/{{ picture.url }}" class="d-block " alt="{{picture.name}}" style=" object-fit: cover;
+        object-position: 0 0;
+        width: 100%;
+        height: 337px;">
                         </div>
                         {% else %}
                         <div class="carousel-item">
-                            <img src="/media/{{ picture.url }}" class="d-block " alt="{{picture.name}}"
-                                style="height: 480px; width: 25vw;">
+                            <img src="/media/{{ picture.url }}" class="d-block " alt="{{picture.name}}" style=" object-fit: cover;
+        object-position: 0 0;
+        width: 100%;
+        height: 337px;">
                         </div>
                         {% endif %}
                         {% endfor %}
@@ -49,7 +54,7 @@
             </div>
         </div>
         <!-- ส่วน QRCODE -->
-        <div class="col-6" id="app">
+        <div class="col-md-6" id="app">
             <h1>ฝากอะไรไปให้ผู้บริจาค</h1>
             <form method="post" action="{% url 'feedback_by_qrcode' hash_id %}" id="image-form"
                 enctype="multipart/form-data">
@@ -57,27 +62,32 @@
                     <div class="col-12">
                         {% csrf_token %}
                         <label for="file">ฝากรูปไปให้ผู้ให้ (ได้มากกว่า 1 ภาพ)</label>
-                        <input type="file" name="images" multiple>
+                        <div id="gallery"></div>
+                        <input id='images' class="form-control" type="file" name="images" multiple>
                         <br><br>
                         {{form.as_p}}
                     </div>
                     <div class="col-12 mb-2">
-                        
-                            <p id="status"></p>
-                            <a id="map-link" target="_blank"></a>
-                            <input type="hidden" type='text' v-model='latitude' name="ladtitude" id='ladtitude' value="">
-                            <input type="hidden" type='text' v-model='longtitude' name="longtitude" id='longtitude' value="">
 
-                            <a class='btn btn-info' v-on:click.prevent='get_location()'>ส่งตำเเหน่งบอกว่าของบริจาคของเขาอยู่ที่นี่</a>
-                        
+                        <p id="status"></p>
+                        <a id="map-link" target="_blank"></a>
+                        <input type="hidden" type='text' v-model='latitude' name="ladtitude" id='ladtitude' value="">
+                        <input type="hidden" type='text' v-model='longtitude' name="longtitude" id='longtitude'
+                            value="">
+
+
+                        <button class="btn btn-secondary btn-lg btn-block"
+                            v-on:click.prevent='get_location()'>Allow Geolocation</button><button type="submit" class="btn btn-success btn-lg btn-block">ส่งข้อความ</button>
+
                     </div>
-                    <button type="submit" class='btn btn-success'>submit</button>
+                    
                 </div>
             </form>
-            
+
         </div>
 
     </div>
+
     <script>
 
         var app = new Vue({
@@ -121,6 +131,32 @@
 
             }
         })
+
+        function previewImages() {
+
+            var $preview = $('#gallery').empty();
+            if (this.files) $.each(this.files, readAndPreview);
+
+            function readAndPreview(i, file) {
+
+                if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                    return alert(file.name + " is not an image");
+                } // else...
+
+                var reader = new FileReader();
+
+                $(reader).on("load", function () {
+                    $preview.append($("<img/>", { src: this.result, height: 100 }));
+                });
+
+                reader.readAsDataURL(file);
+                console.log('test')
+
+            }
+
+        }
+
+        $('#images').on("change", previewImages);
     </script>
 </div>
 <!-- <form method="POST">
