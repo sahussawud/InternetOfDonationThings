@@ -3,7 +3,7 @@ from datetime import datetime
 from django import forms
 from django.forms import ImageField, ModelForm, Textarea
 from django.forms.models import ModelForm
-from django.forms.widgets import DateInput, NumberInput, TextInput, Select
+from django.forms.widgets import DateInput, NumberInput, Select, TextInput
 from django.utils.translation import gettext_lazy as _
 
 from donations.models import *
@@ -32,7 +32,7 @@ class DonationForm(ModelForm):
         widgets = {
             'name': TextInput(attrs={'class':'form-control'}),
             'dtype': Select(attrs={'class':'form-control'}),
-            'condition': NumberInput(attrs={'class':'form-control'}),
+            'condition': Select(attrs={'class':'form-control'}),
             'quantity': NumberInput(attrs={'class':'form-control'}),
             'desc': Textarea(attrs={'cols': 40, 'rows': 5 ,'class':'form-control'}),
         }
@@ -62,7 +62,7 @@ class CreateProjectForm(ModelForm):
             'propose': TextInput(attrs={'class':'form-control'}),
             'helping_people': NumberInput(attrs={'class':'form-control'}),
             'address': Textarea(attrs={'cols': 40, 'rows': 5 , 'class':'form-control'}),
-            'desc': Textarea(attrs={'cols': 40, 'rows': 5 , 'class':'form-control'}),
+            'desc': Textarea(attrs={'cols': 40, 'rows': 17 , 'class':'form-control'}),
         }
 
 class FeedbackForm(ModelForm):

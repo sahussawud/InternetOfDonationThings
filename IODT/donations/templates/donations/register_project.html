@@ -1,4 +1,8 @@
 {% extends "base3.html" %}
+{% block Scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+{% endblock Scripts %}
 {% block content %}
 <section class="content-header">
   <div class="container-fluid">
@@ -51,9 +55,10 @@
           <div class="form-group">
 
             <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
+            <div id="gallery"></div>
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="form-control" name="images" id="exampleInputFile" multiple>
+                <input type="file" class="form-control" name="images" id="images" multiple>
                 <!-- <label class="custom-file-label" for="exampleInputFile">Choose file</label> -->
                 <!-- <input type="file" name="images" class="custom-file-input" id="exampleInputFile" multiple> -->
               </div>
@@ -72,8 +77,8 @@
             <!-- <input type="text" id="inputClientCompany" class="form-control"> -->
           </div>
           <div class="form-group">
-            <label for="inputDescription">รายละเอียดโครงการ</label>
-            {{form.desc}}
+            <label for="inputDescription">ที่อยู่ของผู้จะได้รับบริจาค</label>
+            {{form.address}}
             <!-- <textarea id="inputDescription" class="form-control" rows="4"></textarea> -->
           </div>
           <div class="form-group">
@@ -109,8 +114,9 @@
             <!-- <input type="number" id="inputEstimatedBudget" class="form-control"> -->
           </div>
           <div class="form-group">
-            <label for="inputDescription">ที่อยู่ของผู้จะได้รับบริจาค</label>
-            {{form.address}}
+            <label for="inputDescription">รายละเอียดโครงการ</label>
+            {{form.desc}}
+            
             <!-- <textarea id="inputDescription" class="form-control" rows="4"></textarea> -->
           </div>
           <label for="inputEstimatedDuration">วันสิ้นสุดการรับ</label>
@@ -129,8 +135,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <!-- <a href="#" class="btn btn-secondary">Cancel</a> -->
-      <input type="submit" value="Create new Porject" class="btn btn-success float-right">
+      <button type="submit" class="btn btn-success btn-lg btn-block">สร้างโครงการ</button> 
     </div>
   </div>
 </section>
@@ -176,5 +181,31 @@
     </div>
     </form>
 </div>  -->
+<script>
+  function previewImages() {
+
+      var $preview = $('#gallery').empty();
+      if (this.files) $.each(this.files, readAndPreview);
+
+      function readAndPreview(i, file) {
+
+          if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+              return alert(file.name + " is not an image");
+          } // else...
+
+          var reader = new FileReader();
+
+          $(reader).on("load", function () {
+              $preview.append($("<img/>", { src: this.result, height: 100 }));
+          });
+
+          reader.readAsDataURL(file);
+
+      }
+
+  }
+
+  $('#images').on("change", previewImages);
+</script>
 
 {% endblock content %}

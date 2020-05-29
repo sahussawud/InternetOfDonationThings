@@ -1,5 +1,10 @@
 {% extends "base3.html" %}
 {% load static %}
+
+{% block Scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+{% endblock Scripts %}
 {% block content %}
 
 <div class="container">
@@ -8,38 +13,39 @@
         <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
             <strong>{{ success }}</strong> Your donations was registerd to your inventory
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times;</span>
             </button>
-          </div>
+        </div>
         {% elif danger %}
         <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
             <strong>{{ danger }}</strong> You should check in on some of those fields below.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times;</span>
             </button>
-          </div>
+        </div>
 
         {% endif %}
     </div>
     <div class="row">
-        
+
 
         <div class="col">
             <h1>ลงทะเบียนสิ่งของบริจาค</h1>
             <hr>
-        <form method="post" action="{% url 'register_donations' %}" id="image-form" enctype="multipart/form-data">
-               
-                    <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
-                    <input type="file" name="images" multiple>
-                    <br><br>
+            <form method="post" action="{% url 'register_donations' %}" id="image-form" enctype="multipart/form-data">
 
-            <h5 class="card-title font-weight-bold">ลงทะเบียนสิ่งของบริจาค</h5>
+                <label for="file">เลือกรูปภาพ (ได้มากกว่า 1 ภาพ)</label>
+                <div id="gallery"></div>
+                <input id='images' type="file" name="images" multiple>
+                <br><br>
 
-            <!-- <p class="card-text">By : <a href="#">มูลนิธิ KMITL foundation</a><br>
+                <h5 class="card-title font-weight-bold">ลงทะเบียนสิ่งของบริจาค</h5>
+
+                <!-- <p class="card-text">By : <a href="#">มูลนิธิ KMITL foundation</a><br>
                     จำนวน : 40 ตัว | ขั้นต่ำ : 2 ตัว<br>
                     ส่งผ่าน : ช่องทางขนส่งทั่วไป</p> -->
 
-            <!-- <form method="POST" action="{% url 'register' %}"> -->
+                <!-- <form method="POST" action="{% url 'register' %}"> -->
                 {% csrf_token %}
                 <!-- <div class="form-group">
                         <label for="formGroupExampleInput">ชื่อสิ่งของที่บริจาค</label>
@@ -86,7 +92,7 @@
                     <textarea class="form-control" id="exampleTextarea" rows="2">enjoy your gift :)</textarea> -->
                 {{ form.as_p }}
                 <br>
-                <button type="summit" class="btn btn-primary btn-lg btn-block" >submit</button>
+                <button type="summit" class="btn btn-primary btn-lg btn-block">submit</button>
                 <br>
 
             </form>
@@ -102,6 +108,32 @@
 
 </div>
 </div>
+<script>
+    function previewImages() {
+
+        var $preview = $('#gallery').empty();
+        if (this.files) $.each(this.files, readAndPreview);
+
+        function readAndPreview(i, file) {
+
+            if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                return alert(file.name + " is not an image");
+            } // else...
+
+            var reader = new FileReader();
+
+            $(reader).on("load", function () {
+                $preview.append($("<img/>", { src: this.result, height: 100 }));
+            });
+
+            reader.readAsDataURL(file);
+
+        }
+
+    }
+
+    $('#images').on("change", previewImages);
+</script>
 
 
 
