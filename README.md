@@ -9,6 +9,7 @@
 
 กรณีที่ยังไม่ได้ลงทะเบียนเข้าสู่ระบบ ให้กดไปที่ Register จะมีหน้า Register Step 1 ขึ้นมาจากนั้นกรอกข้อมูลลงไป
 <img src="image/register-1.PNG" width="800px" style="max-width:100%;">
+
 เมื่อกรอกข้อมูลเสร็จ กด Next จะมีหน้า Register Step 2 ให้เลือกระหว่าง Donor(ผู้บริจาค) หรือ Recipient(ผู้รับบริจาค)
 <img src="image/register-2.PNG" width="800px" style="max-width:100%;">
 1) สำหรับ Donor(ผู้บริจาค) ให้กรอกข้อมูลส่วนตัว ก็จะเป็นการเสร็จสิ้นการลงทะเบียน
