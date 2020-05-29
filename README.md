@@ -12,8 +12,11 @@
 
 เมื่อกรอกข้อมูลเสร็จ กด Next จะมีหน้า Register Step 2 ให้เลือกระหว่าง Donor(ผู้บริจาค) หรือ Recipient(ผู้รับบริจาค)
 <img src="image/register-2.PNG" width="800px" style="max-width:100%;">
+
 1) สำหรับ Donor(ผู้บริจาค) ให้กรอกข้อมูลส่วนตัว ก็จะเป็นการเสร็จสิ้นการลงทะเบียน
+
 <img src="image/register-3.PNG" width="800px" style="max-width:100%;">
+
 2) สำหรับ Recipient(ผู้รับบริจาค) จะมีให้เลือกระหว่าง Organization(องค์กร) หรือ Person(บุคคลธรรมดา) ทำการเลือกอย่างใดอย่างหนึ่ง และกรอกข้อมูล ก็จะเป็นการเสร็จสิ้นการลงทะเบียน
 <img src="image/register-4.PNG" width="800px" style="max-width:100%;">
 <img src="image/register-5.PNG" width="800px" style="max-width:100%;">
