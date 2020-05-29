@@ -66,4 +66,4 @@ python .\manage.py runserver
 |:---:|:---:|:---:|:---:|
 |[ongsuwannoo](https://github.com/ongsuwannoo)|[Chokcolate](https://github.com/Chokcolate)|[kenso11](https://github.com/kenso11)|[sahussawud](https://github.com/sahussawud)|
 |จักรพรรดิ์<br>สุวรรณโณ|ธีรวัต<br>กาญจนปานวงษ์|ศิรพัชร<br>นาคะรัตนากร|สหัสวรรษ<br>ขันรักษา|
-|61070022|61070104|61070219|61070238|
+|61070022|61070093|61070219|61070238|
