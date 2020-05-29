@@ -59,3 +59,11 @@ Runserver !
 ```
 python .\manage.py runserver
 ```
+
+## Group Members
+
+|<img src="img/member_1.jpg" width="120px" height="120px">|<img src="img/member_2.jpg" width="120px" height="120px">|<img src="img/member_3.jpg" width="120px" height="120px">|<img src="img/member_4.jpg" width="120px" height="120px">|
+|:---:|:---:|:---:|:---:|
+|[ongsuwannoo](https://github.com/ongsuwannoo)|[Chokcolate](https://github.com/Chokcolate)|[kenso11](https://github.com/kenso11)|[sahussawud](https://github.com/sahussawud)|
+|จักรพรรดิ์<br>สุวรรณโณ|ธีรวัต<br>กาญจนปานวงษ์|ศิรพัชร<br>นาคะรัตนากร|สหัสวรรษ<br>ขันรักษา|
+|61070022|61070104|61070219|61070238|
