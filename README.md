@@ -1,14 +1,15 @@
 # InternetOfDonationThings
 
 <li> 🏠 หน้าแรก </li>
-<img src="image/home-1.PNG" width="200px" style="max-width:100%;">
-<img src="image/home-2.PNG" width="200px" style="max-width:100%;">
-<img src="image/login.PNG" width="200px" style="max-width:100%;">
-<img src="image/register-1.PNG" width="200px" style="max-width:100%;">
-<img src="image/register-2.PNG" width="200px" style="max-width:100%;">
-<img src="image/register-3.PNG" width="200px" style="max-width:100%;">
-<img src="image/register-4.PNG" width="200px" style="max-width:100%;">
-<img src="image/register-5.PNG" width="200px" style="max-width:100%;">
+
+<img src="image/home-1.PNG" width="800px" style="max-width:100%;">
+<img src="image/home-2.PNG" width="800px" style="max-width:100%;">
+<img src="image/login.PNG" width="800px" style="max-width:100%;">
+<img src="image/register-1.PNG" width="800px" style="max-width:100%;">
+<img src="image/register-2.PNG" width="800px" style="max-width:100%;">
+<img src="image/register-3.PNG" width="800px" style="max-width:100%;">
+<img src="image/register-4.PNG" width="800px" style="max-width:100%;">
+<img src="image/register-5.PNG" width="800px" style="max-width:100%;">
 
 สำหรับหน้าแรก จะมีโครงการที่กำลังรอรับความช่วยเหลือแต่ละโครงการแสดงอยู่ สามารถเลือกดูและทำการบริจาคได้ แต่จะต้อง Login เข้าสู่ระบบ เพื่อทำการบริจาคหรือรับบริจาคสิ่งของ
 กรณีที่ยังไม่ได้ลงทะเบียนเข้าสู่ระบบ ให้กดไปที่ Register จะมีหน้า Register Step 1 ขึ้นมาจากนั้นกรอกข้อมูลลงไป
