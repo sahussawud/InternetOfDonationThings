@@ -62,7 +62,7 @@ class CreateProjectForm(ModelForm):
             'propose': TextInput(attrs={'class':'form-control'}),
             'helping_people': NumberInput(attrs={'class':'form-control'}),
             'address': Textarea(attrs={'cols': 40, 'rows': 5 , 'class':'form-control'}),
-            'desc': Textarea(attrs={'cols': 40, 'rows': 17 , 'class':'form-control'}),
+            'desc': Textarea(attrs={'cols': 40, 'rows': 17   , 'class':'form-control'}),
         }
 
 class FeedbackForm(ModelForm):

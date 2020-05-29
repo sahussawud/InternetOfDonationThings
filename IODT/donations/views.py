@@ -324,8 +324,8 @@ class project_api(APIView):
             else:
                 project = Project.objects.all()
         if active_project:
-            project = project.filter(expire_date__gte=date.today())
-
+            # project = project.filter(expire_date__gte=date.today())
+            project = project.filter(status='open')
         project = project.order_by('expire_date')
         serializer = ProjectOverviewSerializer(project, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

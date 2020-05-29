@@ -21,7 +21,7 @@
 </style>
 <br><br>
 <div class="container" id='app'>
-  <div class="row">
+
     <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -30,13 +30,13 @@
       </ol>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="{% static 'asset/Banner-IODT-2.png'%}" class="d-block w-100" alt="...">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>ยินดีต้อนรับสู่โลกเเห่งการเเบ่งปัน</h5>
-            <p>ร่วมกันสร้างโลกด้วยความเอื้อเฝื้อเผื่อเเผ่ซึ่งกันเเละกันได้ที่นี่</p>
+          <img src="{% static 'asset/Banner-IODT-2.png'%}" class="d-block w-100" style="">
+          <div class="carousel-caption d-none d-md-block" style="color: white; font-size: 1.4em;">
+            <h2 style="background-color:  #b3607e;">ยินดีต้อนรับสู่โลกเเห่งการเเบ่งปัน</h2>
+            <p style="background-color:  #b3607e;">ร่วมกันสร้างโลกด้วยความเอื้อเฝื้อเผื่อเเผ่ซึ่งกันเเละกันได้ที่นี่</p>
           </div>
         </div>
-        <div class="carousel-item">
+        <!-- <div class="carousel-item">
           <img src="{% static 'asset/Banner-IODT-2.png'%}" class="d-block w-100" alt="...">
           <div class="carousel-caption d-none d-md-block">
             <h5>Second slide label</h5>
@@ -49,7 +49,7 @@
             <h5>Third slide label</h5>
             <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
           </div>
-        </div>
+        </div> -->
       </div>
       <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -60,7 +60,8 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-  </div>
+  
+
   <div class="row my-5">
     <h1 class="h1 mx-auto">โครงการที่กำลังรอรับความช่วยเหลือ</h1>
   </div>
@@ -103,9 +104,9 @@
           v-if='project.status=="open"'>เปิดรับบริจาค</span>
         <span class="notify-badge badge badge-danger" style="font-size:1rem;"
           v-else-if='project.status=="close"'>ปิดรับบริจาค</span>
-        <span class="notify-badge badge badge-danger" style="font-size:1rem;"
+        <span class="notify-badge badge badge-info" style="font-size:1rem;"
           v-else-if='project.status=="process"'>ดำเนินการ</span>
-        <span class="notify-badge badge badge-warning" style="font-size:1rem;" v-else>เสร็จสิ้น</span>
+        <span class="notify-badge badge badge-secondary" style="font-size:1rem;" v-else>เสร็จสิ้น</span>
 
         <img v-bind:src="project.album.picture_set[0].url" class="card-img-top" alt="..." style=" object-fit: cover;
         object-position: 0 0;
